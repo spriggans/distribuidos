@@ -4,12 +4,13 @@ package BD;
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author angel
  */
+
 import java.sql.*;
+
 
 public class BaseDeDatos {
 
@@ -67,31 +68,34 @@ public class BaseDeDatos {
             }
         }
     }
-    
+
     public ResultSet ejecutarQuery(String query) throws SQLException {
         establecerConexion();
         ps = conexion.prepareStatement(query);
         rs = ps.executeQuery();
         return rs;
     }
-    
-    public int ejecutarUpdate(String query)throws SQLException {
+
+    public int ejecutarUpdate(String query) throws SQLException {
         establecerConexion();
         ps = conexion.prepareStatement(query);
         return ps.executeUpdate();
     }
-    
-    public static void main(String[] args) throws SQLException{
-        BaseDeDatos b=new BaseDeDatos();
-        b.establecerConexion();
-        String [][] resul=new String[1][1];
-        
-       ResultSet x=b.ejecutarQuery("select * from nodo");
 
-        while (x.next()){
-            resul[0][0]= x.getString("ip");
-        }
-        x.close();
-        System.out.print(resul[0][0]);
+    public static void main(String[] args) throws SQLException {
+//        BaseDeDatos b=new BaseDeDatos();
+//        b.establecerConexion();
+//        String [][] resul=new String[1][1];
+//        
+//       ResultSet x=b.ejecutarQuery("select * from nodo");
+//
+//        while (x.next()){
+//            resul[0][0]= x.getString("ip");
+//        }
+//        x.close();
+////        System.out.print(resul[0][0]);
+//        Session session = HibernateUtil.getSessionFactory().openSession();
+//        Nodo p = (Nodo) session.get(Nodo.class, 1);
+//        System.out.println("Este nodo tiene IP " + p.getId().toString());
     }
 }
