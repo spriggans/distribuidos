@@ -4,6 +4,7 @@
  */
 package GUI;
 
+import Logica.ActualizarPantalla;
 import chat.Chat;
 import chat.escucharCliente;
 import java.io.IOException;
@@ -26,6 +27,8 @@ public class Cliente extends javax.swing.JFrame{
     InputStream is=null;
     OutputStream os=null;
     Socket cliente=null;
+    public String ipNodo=null;
+    public String ipServ=null;
 
     /**
      * Creates new form Cliente
@@ -36,10 +39,13 @@ public class Cliente extends javax.swing.JFrame{
              cliente= new Socket ("localhost",8888);
              is = cliente.getInputStream();
              os = cliente.getOutputStream();      
+             ipNodo= cliente.getInetAddress().getHostAddress().toString();
+             ipServ= cliente.getRemoteSocketAddress().toString();
              this.setLocationRelativeTo(null);
-      //       out= new ObjectOutputStream(os);  
              Thread hilo = new Thread(new escucharCliente(pantalla,cliente));
+             Thread hiloActualizar = new Thread (new ActualizarPantalla(this.procesos,this.directorio,this.filesystem,ipNodo,ipServ));
              hilo.start();
+             hiloActualizar.start();
         } catch (UnknownHostException ex) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -74,11 +80,11 @@ public class Cliente extends javax.swing.JFrame{
         jTextArea6 = new javax.swing.JTextArea();
         jTabbedPane3 = new javax.swing.JTabbedPane();
         jScrollPane9 = new javax.swing.JScrollPane();
-        jTextArea7 = new javax.swing.JTextArea();
+        procesos = new javax.swing.JTextArea();
         jScrollPane10 = new javax.swing.JScrollPane();
-        jTextArea8 = new javax.swing.JTextArea();
+        directorio = new javax.swing.JTextArea();
         jScrollPane11 = new javax.swing.JScrollPane();
-        jTextArea9 = new javax.swing.JTextArea();
+        filesystem = new javax.swing.JTextArea();
         jSeparator2 = new javax.swing.JSeparator();
         jSeparator3 = new javax.swing.JSeparator();
         jRadioButton1 = new javax.swing.JRadioButton();
@@ -153,21 +159,21 @@ public class Cliente extends javax.swing.JFrame{
 
         getContentPane().add(jTabbedPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 310, 220));
 
-        jTextArea7.setColumns(20);
-        jTextArea7.setRows(5);
-        jScrollPane9.setViewportView(jTextArea7);
+        procesos.setColumns(20);
+        procesos.setRows(5);
+        jScrollPane9.setViewportView(procesos);
 
         jTabbedPane3.addTab("CPU", jScrollPane9);
 
-        jTextArea8.setColumns(20);
-        jTextArea8.setRows(5);
-        jScrollPane10.setViewportView(jTextArea8);
+        directorio.setColumns(20);
+        directorio.setRows(5);
+        jScrollPane10.setViewportView(directorio);
 
         jTabbedPane3.addTab("/home", jScrollPane10);
 
-        jTextArea9.setColumns(20);
-        jTextArea9.setRows(5);
-        jScrollPane11.setViewportView(jTextArea9);
+        filesystem.setColumns(20);
+        filesystem.setRows(5);
+        jScrollPane11.setViewportView(filesystem);
 
         jTabbedPane3.addTab("FileSystems", jScrollPane11);
 
@@ -297,7 +303,9 @@ public class Cliente extends javax.swing.JFrame{
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem agregarNodo;
+    private javax.swing.JTextArea directorio;
     private javax.swing.JButton enviar;
+    private javax.swing.JTextArea filesystem;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -324,13 +332,11 @@ public class Cliente extends javax.swing.JFrame{
     private javax.swing.JTextArea jTextArea4;
     private javax.swing.JTextArea jTextArea5;
     private javax.swing.JTextArea jTextArea6;
-    private javax.swing.JTextArea jTextArea7;
-    private javax.swing.JTextArea jTextArea8;
-    private javax.swing.JTextArea jTextArea9;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextArea mensaje;
     private javax.swing.JTextArea pantalla;
+    private javax.swing.JTextArea procesos;
     // End of variables declaration//GEN-END:variables
 
 }

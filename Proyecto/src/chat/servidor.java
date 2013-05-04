@@ -50,7 +50,7 @@ public class servidor {
         try {
             implementarRmi rmi= new implementarRmi();
             Registry reg = LocateRegistry.createRegistry(1099);
-            reg.rebind ("RMI", rmi);
+            reg.rebind ("servidor", rmi);
             servidor ser = new servidor();
         } catch (Exception e){}  
     }
