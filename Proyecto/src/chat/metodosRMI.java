@@ -4,8 +4,10 @@
  */
 package chat;
 
+import BD.Cpu;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.List;
 
 /**
  *
@@ -13,7 +15,7 @@ import java.rmi.RemoteException;
  */
 public interface metodosRMI extends Remote {
    
-    String obtenerTopCPU (String ip) throws RemoteException;
+    List<Cpu> obtenerTopCPU (String ip) throws RemoteException;
     String obtenerTopDirectorios (String ip) throws RemoteException;
     float usoCpu (String ip) throws RemoteException;
     Long usoRam (String ip) throws RemoteException;

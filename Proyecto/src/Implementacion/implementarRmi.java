@@ -5,26 +5,55 @@
 package Implementacion;
 
 import BD.BaseDeDatos;
+import BD.Cpu;
+import BD.Nodo;
 import chat.metodosRMI;
+import hibernate.HibernateUtil;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
+import java.util.Set;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 /**
  *
  * @author Angel
  */
-public class implementarRmi extends UnicastRemoteObject implements metodosRMI, Serializable{
-    public BaseDeDatos bd=null;
+public class implementarRmi extends UnicastRemoteObject implements metodosRMI, Serializable {
+    //  public BaseDeDatos bd=null;
 
-    
-    public implementarRmi () throws RemoteException{
-        bd=new BaseDeDatos();
+    private static SessionFactory sessionFactory = null;
+    private Session session;
+    public implementarRmi() throws RemoteException {
+        // bd=new BaseDeDatos();
+        Session session = null;
+
+        try {
+            sessionFactory = HibernateUtil.getSessionFactory();
+            session = sessionFactory.openSession();
+
+            System.out.println("Insertando registro");
+            Transaction tx = session.beginTransaction();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
     }
-    
+
     @Override
-    public String obtenerTopCPU(String ip) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Cpu> obtenerTopCPU(String ip) throws RemoteException {
+       Query querynodo = session.createQuery("from Nodo where ip='192.168.1.1'").setMaxResults(1);
+                List <Nodo> nodo=(List<Nodo>)querynodo.list();
+                Long idnodo= nodo.get(0).getId();
+               
+                Query cpus = session.createQuery("from Cpu where fk_nodo='" + idnodo + "' ORDER by id desc").setMaxResults(10);
+                List<Cpu> list = (List<Cpu>) cpus.list();
+             //   System.out.println(list.get(0).getCpu().toString());
+        return list;
     }
 
     @Override
@@ -46,5 +75,4 @@ public class implementarRmi extends UnicastRemoteObject implements metodosRMI, S
     public String usoFilesystem(String ip) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
 }
