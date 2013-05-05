@@ -5,6 +5,7 @@
 package chat;
 
 import BD.Cpu;
+import BD.Proceso;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
@@ -17,10 +18,45 @@ import org.hibernate.Session;
 public interface metodosRMI extends Remote {
    
     void iniciarSesion() throws RemoteException;
-    List<Cpu> obtenerTopCPU (String ip) throws RemoteException;
+    /**
+     *
+     * @param ip
+     * @return
+     * @throws RemoteException
+     */
+    List<Proceso> obtenerTopProcesos (String ip) throws RemoteException;
+    /**
+     *
+     * @param ip
+     * @return
+     * @throws RemoteException
+     */
     String obtenerTopDirectorios (String ip) throws RemoteException;
+    /**
+     *
+     * @param ip
+     * @return
+     * @throws RemoteException
+     */
     float usoCpu (String ip) throws RemoteException;
+    /**
+     *
+     * @param ip
+     * @return
+     * @throws RemoteException
+     */
     Long usoRam (String ip) throws RemoteException;
+    /**
+     *
+     * @param ip
+     * @return
+     * @throws RemoteException
+     */
     String usoFilesystem (String ip) throws RemoteException;
+    /**
+     *
+     * @return
+     * @throws RemoteException
+     */
     Session getSesion() throws RemoteException;
 }

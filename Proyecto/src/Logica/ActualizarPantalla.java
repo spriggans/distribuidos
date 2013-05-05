@@ -5,6 +5,7 @@
 package Logica;
 
 import BD.Cpu;
+import BD.Proceso;
 import GUI.Cliente;
 import chat.metodosRMI;
 import java.rmi.RMISecurityManager;
@@ -58,13 +59,13 @@ public class ActualizarPantalla extends Thread{
     
     @Override
     public void run (){
-        List <Cpu> topCpu;
+        List <Proceso> topProceso;
         
         while (true){
             try {
-                topCpu= interfaz.obtenerTopCPU("192.168.1.1");
-                cpu.setText(topCpu.get(0).getCpu().toString()+" %"); 
-                System.out.println (topCpu.get(0).getCpu().toString());
+                topProceso= interfaz.obtenerTopProcesos("192.168.1.1");
+                cpu.setText(topProceso.get(0).getValor().toString()+" %"); 
+                System.out.println (topProceso.get(0).getValor().toString());
                 Thread.sleep(10000);
             } catch (RemoteException | InterruptedException ex) {
                 Logger.getLogger(ActualizarPantalla.class.getName()).log(Level.SEVERE, null, ex);

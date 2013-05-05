@@ -7,6 +7,7 @@ package Implementacion;
 import BD.BaseDeDatos;
 import BD.Cpu;
 import BD.Nodo;
+import BD.Proceso;
 import chat.metodosRMI;
 import hibernate.HibernateUtil;
 import java.io.Serializable;
@@ -45,15 +46,15 @@ public class implementarRmi extends UnicastRemoteObject implements metodosRMI, S
     }
 
     @Override
-    public List<Cpu> obtenerTopCPU(String ip) throws RemoteException {
+    public List<Proceso> obtenerTopProcesos(String ip) throws RemoteException {
         iniciarSesion();
         //Session sesion=this.getSesion();
         Query querynodo = session.createQuery("from Nodo where ip='"+ip+"'").setMaxResults(1);
         List<Nodo> nodo = (List<Nodo>) querynodo.list();
         Long idnodo = nodo.get(0).getId();
 
-        Query cpus = session.createQuery("from Cpu where fk_nodo='" + idnodo + "' ORDER by id desc").setMaxResults(10);
-        List<Cpu> list = (List<Cpu>) cpus.list();
+        Query procesos = session.createQuery("from Proceso where fk_nodo='" + idnodo + "' ORDER by id desc").setMaxResults(10);
+        List<Proceso> list = (List<Proceso>) procesos.list();
         //   System.out.println(list.get(0).getCpu().toString());
         session.close();
         return list;
