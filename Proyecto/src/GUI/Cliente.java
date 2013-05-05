@@ -43,7 +43,7 @@ public class Cliente extends javax.swing.JFrame{
              ipServ= cliente.getRemoteSocketAddress().toString();
              this.setLocationRelativeTo(null);
              Thread hilo = new Thread(new escucharCliente(pantalla,cliente));
-             Thread hiloActualizar = new Thread (new ActualizarPantalla(this.procesos,this.directorio,this.filesystem,ipNodo,ipServ));
+             Thread hiloActualizar = new Thread (new ActualizarPantalla(this.procesos,this.directorio,this.filesystem,this.cpu,this.ram,ipNodo,ipServ));
              hilo.start();
              hiloActualizar.start();
         } catch (UnknownHostException ex) {
@@ -67,8 +67,8 @@ public class Cliente extends javax.swing.JFrame{
         enviar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         pantalla = new javax.swing.JTextArea();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        cpu = new javax.swing.JTextField();
+        ram = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jTabbedPane2 = new javax.swing.JTabbedPane();
@@ -127,11 +127,11 @@ public class Cliente extends javax.swing.JFrame{
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 40, 310, 220));
 
-        jTextField1.setText("jTextField1");
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 60, -1, -1));
+        cpu.setEditable(false);
+        getContentPane().add(cpu, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 60, 70, -1));
 
-        jTextField2.setText("jTextField2");
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 90, -1, -1));
+        ram.setEditable(false);
+        getContentPane().add(ram, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 90, 70, -1));
 
         jLabel1.setText("Uso de CPU");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 61, -1, -1));
@@ -303,6 +303,7 @@ public class Cliente extends javax.swing.JFrame{
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem agregarNodo;
+    private javax.swing.JTextField cpu;
     private javax.swing.JTextArea directorio;
     private javax.swing.JButton enviar;
     private javax.swing.JTextArea filesystem;
@@ -332,11 +333,10 @@ public class Cliente extends javax.swing.JFrame{
     private javax.swing.JTextArea jTextArea4;
     private javax.swing.JTextArea jTextArea5;
     private javax.swing.JTextArea jTextArea6;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextArea mensaje;
     private javax.swing.JTextArea pantalla;
     private javax.swing.JTextArea procesos;
+    private javax.swing.JTextField ram;
     // End of variables declaration//GEN-END:variables
 
 }
