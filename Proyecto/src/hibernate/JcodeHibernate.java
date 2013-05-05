@@ -43,12 +43,18 @@ public class JcodeHibernate {
 //                session.save(c);
 //                Query query = session.createQuery("from Nodo");
 //                Iterator it = query.iterate();
-                Query idnodo = session.createQuery("from Nodo where ip='192.168.1.1'").setMaxResults(1);
-                List <Nodo> nodo=(List<Nodo>)idnodo.list();
-                System.out.println("id nodo" + nodo.get(0).getId());
-                Query cpus = session.createQuery("from Cpu where fk_nodo='" + "1" + "' ORDER by id desc").setMaxResults(10);
+                Nodo x= (Nodo) session.createQuery("from Nodo where ip='192.168.1.1'").uniqueResult();
+                Nodo y =(Nodo) session.load(Nodo.class,new Long(1));
+                System.out.println(y.getIp());
+          //      List <Nodo> nodo=(List<Nodo>)idnodo.list();
+                System.out.println("id nodo" + x.getId());
+                Query cpus = session.createQuery("from Cpu where fk_nodo='" + x.getId() + "' ORDER by id desc").setMaxResults(10);
                 List<Cpu> list = (List<Cpu>) cpus.list();
                 System.out.println(list.get(0).getCpu().toString());
+                
+           
+        Cpu cpu= (Cpu) session.createQuery("from Cpu where fk_nodo ="+x.getId()+" order by id desc").setMaxResults(1).list().get(0);
+        System.out.println(cpu.getCpu());
                 tx.commit();
 //                System.out.println("Insert Finalizado...");
 //                Long id;

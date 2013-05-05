@@ -6,8 +6,11 @@ package Implementacion;
 
 import BD.BaseDeDatos;
 import BD.Cpu;
+import BD.Directorio;
+import BD.Filesystem;
 import BD.Nodo;
 import BD.Proceso;
+import BD.Ram;
 import chat.metodosRMI;
 import hibernate.HibernateUtil;
 import java.io.Serializable;
@@ -15,6 +18,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.Set;
+import org.hibernate.FlushMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -31,65 +35,66 @@ public class implementarRmi extends UnicastRemoteObject implements metodosRMI, S
     private static SessionFactory sessionFactory = null;
 
     public implementarRmi() throws RemoteException {
-        // bd=new BaseDeDatos();
-//        Session session = null;
-//
-//        try {
-//            sessionFactory = HibernateUtil.getSessionFactory();
-//            session = sessionFactory.openSession();
-//
-//            System.out.println("Insertando registro");
-//            Transaction tx = session.beginTransaction();
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        }
     }
 
     @Override
     public List<Proceso> obtenerTopProcesos(String ip) throws RemoteException {
         iniciarSesion();
-        //Session sesion=this.getSesion();
-        Query querynodo = session.createQuery("from Nodo where ip='"+ip+"'").setMaxResults(1);
-        List<Nodo> nodo = (List<Nodo>) querynodo.list();
-        Long idnodo = nodo.get(0).getId();
-
-        Query procesos = session.createQuery("from Proceso where fk_nodo='" + idnodo + "' ORDER by id desc").setMaxResults(10);
+        Transaction tx = session.beginTransaction();
+        
+        //Session sesion=this.getSesion();       
+        Nodo nodo= (Nodo) session.createQuery("from Nodo where ip='"+ip+"'").uniqueResult();
+        Query procesos = session.createQuery("from Proceso where fk_nodo='" + nodo.getId() + "' ORDER by id desc").setMaxResults(10);
         List<Proceso> list = (List<Proceso>) procesos.list();
-        //   System.out.println(list.get(0).getCpu().toString());
+        tx.commit();
         session.close();
         return list;
     }
 
     @Override
-    public String obtenerTopDirectorios(String ip) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Directorio> obtenerTopDirectorios(String ip) throws RemoteException {
+         iniciarSesion();
+        //Session sesion=this.getSesion();       
+        Nodo nodo= (Nodo) session.createQuery("from Nodo where ip='"+ip+"'").uniqueResult();
+        Query directorios = session.createQuery("from Directorio where fk_nodo='" + nodo.getId() + "' ORDER by id desc").setMaxResults(10);
+        List<Directorio> list = (List<Directorio>) directorios.list();
+        session.close();
+        return list;
     }
 
     @Override
     public float usoCpu(String ip) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        iniciarSesion();
+        Nodo nodo= (Nodo) session.createQuery("from Nodo where ip='"+ip+"'").uniqueResult();
+        Cpu cpu= (Cpu) session.createQuery("from Cpu where fk_nodo ="+nodo.getId()+" order by id desc").setMaxResults(1).list().get(0);
+        return cpu.getCpu();
     }
 
     @Override
-    public Long usoRam(String ip) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public float usoRam(String ip) throws RemoteException {
+        iniciarSesion();
+        Nodo nodo= (Nodo) session.createQuery("from Nodo where ip='"+ip+"'").uniqueResult();
+        Ram ram= (Ram) session.createQuery("from Ram where fk_nodo ="+nodo.getId()+" order by id desc").setMaxResults(1).list().get(0);
+        return ram.getRam();
     }
 
     @Override
     public String usoFilesystem(String ip) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        iniciarSesion();
+        Nodo nodo= (Nodo) session.createQuery("from Nodo where ip='"+ip+"'").uniqueResult();
+        Filesystem fs= (Filesystem) session.createQuery("from Filesystem where fk_nodo ="+nodo.getId()+" order by id desc").setMaxResults(1).list().get(0);
+        return fs.getNombre();
     }
 
     @Override
     public void iniciarSesion() throws RemoteException {
 
-
         try {
             sessionFactory = HibernateUtil.getSessionFactory();
             session = sessionFactory.openSession();
-
+            session.setFlushMode(FlushMode.AUTO);
             System.out.println("Insertando registro");
-            Transaction tx = session.beginTransaction();
+       //     Transaction tx = session.beginTransaction();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

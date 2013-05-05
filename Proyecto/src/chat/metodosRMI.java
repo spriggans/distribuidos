@@ -5,6 +5,7 @@
 package chat;
 
 import BD.Cpu;
+import BD.Directorio;
 import BD.Proceso;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -31,7 +32,7 @@ public interface metodosRMI extends Remote {
      * @return
      * @throws RemoteException
      */
-    String obtenerTopDirectorios (String ip) throws RemoteException;
+    List<Directorio> obtenerTopDirectorios (String ip) throws RemoteException;
     /**
      *
      * @param ip
@@ -45,7 +46,7 @@ public interface metodosRMI extends Remote {
      * @return
      * @throws RemoteException
      */
-    Long usoRam (String ip) throws RemoteException;
+    float usoRam (String ip) throws RemoteException;
     /**
      *
      * @param ip
