@@ -43,7 +43,7 @@ public class Cliente extends javax.swing.JFrame{
              ipServ= cliente.getRemoteSocketAddress().toString();
              this.setLocationRelativeTo(null);
              Thread hilo = new Thread(new escucharCliente(pantalla,cliente));
-             Thread hiloActualizar = new Thread (new ActualizarPantalla(this.procesos,this.directorio,this.filesystem,this.cpu,this.ram,ipNodo,ipServ));
+             Thread hiloActualizar = new Thread (new ActualizarPantalla(this.tproc,this.directorio,this.filesystem,this.cpu,this.ram,ipNodo,ipServ));
              hilo.start();
              hiloActualizar.start();
         } catch (UnknownHostException ex) {
@@ -78,13 +78,13 @@ public class Cliente extends javax.swing.JFrame{
         jTextArea5 = new javax.swing.JTextArea();
         jScrollPane8 = new javax.swing.JScrollPane();
         jTextArea6 = new javax.swing.JTextArea();
-        jTabbedPane3 = new javax.swing.JTabbedPane();
-        jScrollPane9 = new javax.swing.JScrollPane();
-        procesos = new javax.swing.JTextArea();
-        jScrollPane10 = new javax.swing.JScrollPane();
-        directorio = new javax.swing.JTextArea();
-        jScrollPane11 = new javax.swing.JScrollPane();
-        filesystem = new javax.swing.JTextArea();
+        JTabbedPane1 = new javax.swing.JTabbedPane();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tproc = new javax.swing.JTable();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        directorio = new javax.swing.JTable();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        filesystem = new javax.swing.JTable();
         jSeparator2 = new javax.swing.JSeparator();
         jSeparator3 = new javax.swing.JSeparator();
         jRadioButton1 = new javax.swing.JRadioButton();
@@ -159,34 +159,71 @@ public class Cliente extends javax.swing.JFrame{
 
         getContentPane().add(jTabbedPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 310, 220));
 
-        procesos.setColumns(20);
-        procesos.setRows(5);
-        jScrollPane9.setViewportView(procesos);
+        tproc.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane3.setViewportView(tproc);
 
-        jTabbedPane3.addTab("CPU", jScrollPane9);
+        JTabbedPane1.addTab("Procesos", jScrollPane3);
 
-        directorio.setColumns(20);
-        directorio.setRows(5);
-        jScrollPane10.setViewportView(directorio);
+        directorio.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane4.setViewportView(directorio);
 
-        jTabbedPane3.addTab("/home", jScrollPane10);
+        JTabbedPane1.addTab("/home", jScrollPane4);
 
-        filesystem.setColumns(20);
-        filesystem.setRows(5);
-        jScrollPane11.setViewportView(filesystem);
+        filesystem.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane5.setViewportView(filesystem);
 
-        jTabbedPane3.addTab("FileSystems", jScrollPane11);
+        JTabbedPane1.addTab("FileSystems", jScrollPane5);
 
-        getContentPane().add(jTabbedPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 310, 220));
+        getContentPane().add(JTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 310, 220));
         getContentPane().add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 520, 10));
 
         jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
         getContentPane().add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 40, 20, 440));
 
         jRadioButton1.setText("De forma controlada");
+        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 310, -1, -1));
 
         jRadioButton2.setText("De forma inmediata");
+        jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton2ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jRadioButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 340, -1, -1));
 
         jRadioButton3.setText("Directorio");
@@ -265,7 +302,27 @@ public class Cliente extends javax.swing.JFrame{
 
     private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton3ActionPerformed
         // TODO add your handling code here:
+          if (this.jRadioButton3.isSelected()){
+            this.jRadioButton2.setSelected(false);
+            this.jRadioButton1.setSelected(false);
+        }
     }//GEN-LAST:event_jRadioButton3ActionPerformed
+
+    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+        // TODO add your handling code here:
+        if (this.jRadioButton1.isSelected()){
+            this.jRadioButton2.setSelected(false);
+            this.jRadioButton3.setSelected(false);
+        }
+    }//GEN-LAST:event_jRadioButton1ActionPerformed
+
+    private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
+        // TODO add your handling code here:
+          if (this.jRadioButton2.isSelected()){
+            this.jRadioButton1.setSelected(false);
+            this.jRadioButton3.setSelected(false);
+        }
+    }//GEN-LAST:event_jRadioButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -302,11 +359,12 @@ public class Cliente extends javax.swing.JFrame{
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTabbedPane JTabbedPane1;
     private javax.swing.JMenuItem agregarNodo;
     private javax.swing.JTextField cpu;
-    private javax.swing.JTextArea directorio;
+    private javax.swing.JTable directorio;
     private javax.swing.JButton enviar;
-    private javax.swing.JTextArea filesystem;
+    private javax.swing.JTable filesystem;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -318,25 +376,24 @@ public class Cliente extends javax.swing.JFrame{
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane10;
-    private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
-    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTabbedPane jTabbedPane3;
     private javax.swing.JTextArea jTextArea4;
     private javax.swing.JTextArea jTextArea5;
     private javax.swing.JTextArea jTextArea6;
     private javax.swing.JTextArea mensaje;
     private javax.swing.JTextArea pantalla;
-    private javax.swing.JTextArea procesos;
     private javax.swing.JTextField ram;
+    private javax.swing.JTable tproc;
     // End of variables declaration//GEN-END:variables
 
 }

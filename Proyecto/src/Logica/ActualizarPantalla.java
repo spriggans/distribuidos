@@ -17,17 +17,19 @@ import java.util.logging.Logger;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Angel
  */
 public class ActualizarPantalla extends Thread{
-    private JTextArea pantallaProcesos;
-    private JTextArea pantallaDirectorio;
-    private JTextArea pantallaFileS;
+    private JTable pantallaProcesos;
+    private JTable pantallaDirectorio;
+    private JTable pantallaFileS;
     private JTextField cpu;
     private JTextField ram;
     private Cliente pantalla;
@@ -35,7 +37,7 @@ public class ActualizarPantalla extends Thread{
     private String ipServ;
     private metodosRMI interfaz= null;
     
-    public ActualizarPantalla (JTextArea procesos, JTextArea directorio, JTextArea filesystem, JTextField cpu, JTextField ram, String ipNodo, String ipServ) {
+    public ActualizarPantalla (JTable procesos, JTable directorio, JTable filesystem, JTextField cpu, JTextField ram, String ipNodo, String ipServ) {
          this.ipNodo=ipNodo;
          this.pantallaProcesos=procesos;
          this.pantallaDirectorio=directorio;
@@ -56,17 +58,39 @@ public class ActualizarPantalla extends Thread{
         }
          
     }
-    
+
     @Override
     public void run (){
         List <Proceso> topProceso;
+        float usoCpu;
+        float usoRam;
         
         while (true){
             try {
+                usoCpu= interfaz.usoCpu("192.168.1.1"); // la ip es ipNodo
+                cpu.setText(usoCpu+" %"); 
+                usoRam= interfaz.usoRam("192.168.1.1");
+                ram.setText(usoRam+"");
                 topProceso= interfaz.obtenerTopProcesos("192.168.1.1");
-                cpu.setText(topProceso.get(0).getValor().toString()+" %"); 
-                System.out.println (topProceso.get(0).getValor().toString());
-                Thread.sleep(10000);
+                DefaultTableModel topro = new DefaultTableModel();
+                DefaultTableModel todir = new DefaultTableModel();
+                DefaultTableModel tofils = new DefaultTableModel();
+                
+                topro.addColumn("PID");
+                topro.addColumn("Porcentaje");
+                topro.addColumn("Valor");
+                topro.setNumRows(topProceso.size());
+                
+
+                for (int i=0; i<topProceso.size(); i++){
+                    topro.setValueAt(topProceso.get(i).getPid().toString(), i, 0);
+                    topro.setValueAt(topProceso.get(i).getPorcentaje().toString(), i, 1);
+                    topro.setValueAt(topProceso.get(i).getValor().toString(), i, 2);
+                }
+                this.pantallaProcesos.setModel(topro);
+                
+                
+                Thread.sleep(10000);             
             } catch (RemoteException | InterruptedException ex) {
                 Logger.getLogger(ActualizarPantalla.class.getName()).log(Level.SEVERE, null, ex);
             }
