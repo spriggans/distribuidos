@@ -43,7 +43,7 @@ public class implementarRmi extends UnicastRemoteObject implements metodosRMI, S
         Transaction tx = session.beginTransaction();
         //Session sesion=this.getSesion();       
         Nodo nodo= (Nodo) session.createQuery("from Nodo where ip='"+ip+"'").uniqueResult();
-        Query procesos = session.createQuery("from Proceso where fk_nodo='" + nodo.getId() + "' ORDER porcentaje desc").setMaxResults(10);
+        Query procesos = session.createQuery("from Proceso where fk_nodo='" + nodo.getId() + "' ORDER by porcentaje DESC").setMaxResults(10);
         List<Proceso> list = (List<Proceso>) procesos.list();
         tx.commit();
         session.close();
