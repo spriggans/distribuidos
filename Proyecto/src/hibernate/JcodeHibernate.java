@@ -6,6 +6,7 @@ package hibernate;
 
 import BD.Cpu;
 import BD.Nodo;
+import BD.Proceso;
 import java.util.Iterator;
 import java.util.List;
 import org.hibernate.Query;
@@ -48,9 +49,12 @@ public class JcodeHibernate {
                 System.out.println(y.getIp());
           //      List <Nodo> nodo=(List<Nodo>)idnodo.list();
                 System.out.println("id nodo" + x.getId());
-                Query cpus = session.createQuery("from Cpu where fk_nodo='" + x.getId() + "' ORDER by id desc").setMaxResults(10);
-                List<Cpu> list = (List<Cpu>) cpus.list();
+                Query procesos = session.createQuery("from Cpu where fk_nodo=1 ORDER by id desc, cpu desc").setMaxResults(10);
+        List<Cpu> list = (List<Cpu>) procesos.list();
                 System.out.println(list.get(0).getCpu().toString());
+                 System.out.println(list.get(1).getCpu().toString());
+                  System.out.println(list.get(2).getCpu().toString());
+               
                 
            
         Cpu cpu= (Cpu) session.createQuery("from Cpu where fk_nodo ="+x.getId()+" order by id desc").setMaxResults(1).list().get(0);

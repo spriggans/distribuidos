@@ -41,10 +41,9 @@ public class implementarRmi extends UnicastRemoteObject implements metodosRMI, S
     public List<Proceso> obtenerTopProcesos(String ip) throws RemoteException {
         iniciarSesion();
         Transaction tx = session.beginTransaction();
-        
         //Session sesion=this.getSesion();       
         Nodo nodo= (Nodo) session.createQuery("from Nodo where ip='"+ip+"'").uniqueResult();
-        Query procesos = session.createQuery("from Proceso where fk_nodo='" + nodo.getId() + "' ORDER by id desc").setMaxResults(10);
+        Query procesos = session.createQuery("from Proceso where fk_nodo='" + nodo.getId() + "' ORDER by pid desc, porcentaje desc").setMaxResults(10);
         List<Proceso> list = (List<Proceso>) procesos.list();
         tx.commit();
         session.close();
@@ -54,10 +53,12 @@ public class implementarRmi extends UnicastRemoteObject implements metodosRMI, S
     @Override
     public List<Directorio> obtenerTopDirectorios(String ip) throws RemoteException {
          iniciarSesion();
+         Transaction tx = session.beginTransaction();
         //Session sesion=this.getSesion();       
         Nodo nodo= (Nodo) session.createQuery("from Nodo where ip='"+ip+"'").uniqueResult();
         Query directorios = session.createQuery("from Directorio where fk_nodo='" + nodo.getId() + "' ORDER by id desc").setMaxResults(10);
         List<Directorio> list = (List<Directorio>) directorios.list();
+         tx.commit();
         session.close();
         return list;
     }
@@ -65,24 +66,33 @@ public class implementarRmi extends UnicastRemoteObject implements metodosRMI, S
     @Override
     public float usoCpu(String ip) throws RemoteException {
         iniciarSesion();
+        Transaction tx = session.beginTransaction();
         Nodo nodo= (Nodo) session.createQuery("from Nodo where ip='"+ip+"'").uniqueResult();
         Cpu cpu= (Cpu) session.createQuery("from Cpu where fk_nodo ="+nodo.getId()+" order by id desc").setMaxResults(1).list().get(0);
+         tx.commit();
+         session.close();
         return cpu.getCpu();
     }
 
     @Override
     public float usoRam(String ip) throws RemoteException {
         iniciarSesion();
+        Transaction tx = session.beginTransaction();
         Nodo nodo= (Nodo) session.createQuery("from Nodo where ip='"+ip+"'").uniqueResult();
         Ram ram= (Ram) session.createQuery("from Ram where fk_nodo ="+nodo.getId()+" order by id desc").setMaxResults(1).list().get(0);
+         tx.commit();
+         session.close();
         return ram.getRam();
     }
 
     @Override
     public String usoFilesystem(String ip) throws RemoteException {
         iniciarSesion();
+        Transaction tx = session.beginTransaction();
         Nodo nodo= (Nodo) session.createQuery("from Nodo where ip='"+ip+"'").uniqueResult();
         Filesystem fs= (Filesystem) session.createQuery("from Filesystem where fk_nodo ="+nodo.getId()+" order by id desc").setMaxResults(1).list().get(0);
+         tx.commit();
+         session.close();
         return fs.getNombre();
     }
 
