@@ -8,6 +8,7 @@ import BD.Cpu;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
+import org.hibernate.Session;
 
 /**
  *
@@ -15,10 +16,11 @@ import java.util.List;
  */
 public interface metodosRMI extends Remote {
    
+    void iniciarSesion() throws RemoteException;
     List<Cpu> obtenerTopCPU (String ip) throws RemoteException;
     String obtenerTopDirectorios (String ip) throws RemoteException;
     float usoCpu (String ip) throws RemoteException;
     Long usoRam (String ip) throws RemoteException;
     String usoFilesystem (String ip) throws RemoteException;
-    
+    Session getSesion() throws RemoteException;
 }
