@@ -4,10 +4,13 @@
  */
 package Logica;
 
+import BD.Cpu;
 import GUI.Cliente;
 import chat.metodosRMI;
 import java.rmi.RMISecurityManager;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.Context;
@@ -50,6 +53,13 @@ public class ActualizarPantalla extends Thread{
     
     @Override
     public void run (){
+        List <Cpu> topCpu;
+        try {
+            topCpu= interfaz.obtenerTopCPU("192.168.1.1");
+            System.out.println(topCpu.get(0).getCpu());
+        } catch (RemoteException ex) {
+            Logger.getLogger(ActualizarPantalla.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
     
