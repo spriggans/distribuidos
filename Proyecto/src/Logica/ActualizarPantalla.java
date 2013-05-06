@@ -89,7 +89,7 @@ public class ActualizarPantalla extends Thread{
                 todir.setNumRows(topDirectorio.size());
                 
                 tofils.addColumn("Nombre");
-                tofils.addColumn("Valor");
+                tofils.addColumn("Usado");
                 tofils.addColumn("Porcentaje");
                 
                 
