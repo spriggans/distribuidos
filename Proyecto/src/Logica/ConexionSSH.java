@@ -14,11 +14,11 @@ import java.io.IOException;
 
 public class ConexionSSH {
 
-    private JSch jsch;
+   // private JSch jsch;
 
-    public void matarProceso9(String usuario, String pass, String ipnodo, String pid) {
+    public void matarProceso9(String usuario, String pass, String ipnodo, String pid,int tipo) {
 
-        jsch = new JSch();
+        JSch jsch = new JSch();
 
         // Es necesario capturar JSchException
         try {
@@ -30,14 +30,13 @@ public class ConexionSSH {
             sesion.setPassword(pass);
 
             sesion.connect();
-
-            ChannelExec channelExec = (ChannelExec) sesion.openChannel("exec");
-
-            channelExec.setCommand("kill -9 "+pid);
-            channelExec.connect();
-
-            channelExec.disconnect();
-
+                ChannelExec channelExec = (ChannelExec) sesion.openChannel("exec");
+                if (tipo==0)
+                    channelExec.setCommand("kill -9 "+pid);
+                else
+                    channelExec.setCommand("kill -15 "+pid);
+                channelExec.connect();
+                channelExec.disconnect();
             sesion.disconnect();
 
         } catch (JSchException e) {
@@ -47,7 +46,7 @@ public class ConexionSSH {
     }
 
     public ConexionSSH() throws IOException {
-        jsch = new JSch();
+        JSch  jsch = new JSch();
 
         // Es necesario capturar JSchException
         try {
@@ -76,7 +75,7 @@ public class ConexionSSH {
 
             ChannelExec channelExec = (ChannelExec) sesion.openChannel("exec");
 
-            channelExec.setCommand("kill -9 4279");
+            channelExec.setCommand("kill -15 4279");
             channelExec.connect();
 
             channelExec.disconnect();
