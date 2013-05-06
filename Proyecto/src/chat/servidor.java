@@ -13,6 +13,7 @@ import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.rmi.server.*;
 
 /**
  *
@@ -28,7 +29,7 @@ public class servidor {
     public servidor() {
 
         try {
-            ss = new ServerSocket(8888);
+            ss = new ServerSocket(8888);     
         } catch (IOException ex) {
             System.err.println("No se puede escuchar en el puerto 8888");
         }
@@ -48,10 +49,13 @@ public class servidor {
     public static void main(String[] args) {
         // TODO code application logic here
         try {
+            
+            System.setProperty("java.rmi.server.hostname", "10.42.0.1");
             implementarRmi rmi= new implementarRmi();
             Registry reg = LocateRegistry.createRegistry(1099);
             reg.rebind ("servidor", rmi);
             servidor ser = new servidor();
+           
         } catch (Exception e){}  
     }
     
