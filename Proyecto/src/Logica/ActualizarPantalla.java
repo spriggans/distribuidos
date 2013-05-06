@@ -4,13 +4,12 @@
  */
 package Logica;
 
-import BD.Cpu;
+import BD.Directorio;
 import BD.Proceso;
 import GUI.Cliente;
 import chat.metodosRMI;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +17,6 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
@@ -62,16 +60,20 @@ public class ActualizarPantalla extends Thread{
     @Override
     public void run (){
         List <Proceso> topProceso;
+        List <Directorio> topDirectorio;
         float usoCpu;
         float usoRam;
         
         while (true){
             try {
-                usoCpu= interfaz.usoCpu("192.168.1.1"); // la ip es ipNodo
-                cpu.setText(usoCpu+" %"); 
+                usoCpu= interfaz.usoCpu("192.168.1.1"); // la ip es ipNodo                
                 usoRam= interfaz.usoRam("192.168.1.1");
-                ram.setText(usoRam+"");
                 topProceso= interfaz.obtenerTopProcesos("192.168.1.1");
+                topDirectorio=interfaz.obtenerTopDirectorios("192.168.1.1");
+                
+                ram.setText(usoRam+"");
+                cpu.setText(usoCpu+" %"); 
+                
                 DefaultTableModel topro = new DefaultTableModel();
                 DefaultTableModel todir = new DefaultTableModel();
                 DefaultTableModel tofils = new DefaultTableModel();
@@ -81,6 +83,16 @@ public class ActualizarPantalla extends Thread{
                 topro.addColumn("Valor");
                 topro.setNumRows(topProceso.size());
                 
+                todir.addColumn("Nombre");
+                todir.addColumn("Valor");
+                todir.addColumn("Porcentaje");
+                todir.setNumRows(topDirectorio.size());
+                
+                tofils.addColumn("Nombre");
+                tofils.addColumn("Valor");
+                tofils.addColumn("Porcentaje");
+                
+                
 
                 for (int i=0; i<topProceso.size(); i++){
                     topro.setValueAt(topProceso.get(i).getPid().toString(), i, 0);
@@ -89,6 +101,12 @@ public class ActualizarPantalla extends Thread{
                 }
                 this.pantallaProcesos.setModel(topro);
                 
+                for (int i=0; i<topDirectorio.size(); i++){
+                    topro.setValueAt(topDirectorio.get(i).getNombre().toString(), i, 0);
+                    topro.setValueAt(topDirectorio.get(i).getValor().toString(), i, 1);
+                    topro.setValueAt(topDirectorio.get(i).getPorcentaje(), i, 2);
+                }
+                this.pantallaDirectorio.setModel(todir);
                 
                 Thread.sleep(10000);             
             } catch (RemoteException | InterruptedException ex) {
