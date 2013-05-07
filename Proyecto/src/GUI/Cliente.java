@@ -43,7 +43,7 @@ public class Cliente extends javax.swing.JFrame{
     public Cliente() {
         try {
              initComponents();
-             cliente= new Socket ("localhost",8888);
+             cliente= new Socket ("10.42.0.1",8888);
              is = cliente.getInputStream();
              os = cliente.getOutputStream();      
          //    ipNodo= cliente.getInetAddress().getHostAddress().toString();
@@ -140,10 +140,10 @@ public class Cliente extends javax.swing.JFrame{
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 50, 210, 210));
 
         cpu.setEditable(false);
-        getContentPane().add(cpu, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 60, 70, -1));
+        getContentPane().add(cpu, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 60, 70, -1));
 
         ram.setEditable(false);
-        getContentPane().add(ram, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 90, 70, -1));
+        getContentPane().add(ram, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 90, 70, -1));
 
         jLabel1.setText("Uso de CPU");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 61, -1, -1));
