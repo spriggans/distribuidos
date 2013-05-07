@@ -5,6 +5,7 @@
 package GUI;
 
 import Logica.ActualizarPantalla;
+import Logica.Usuario;
 import chat.Chat;
 import chat.escucharCliente;
 import java.io.IOException;
@@ -14,8 +15,11 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 
 /**
  *
@@ -29,6 +33,9 @@ public class Cliente extends javax.swing.JFrame{
     Socket cliente=null;
     public String ipNodo=null;
     public String ipServ=null;
+    private ArrayList <Usuario> user=new ArrayList <Usuario> ();
+    private Thread hiloActualizar;
+    private DefaultListModel listamodelo = new DefaultListModel();
 
     /**
      * Creates new form Cliente
@@ -36,23 +43,23 @@ public class Cliente extends javax.swing.JFrame{
     public Cliente() {
         try {
              initComponents();
-             cliente= new Socket ("localhost",8888);
+             cliente= new Socket ("10.42.0.1",8888);
              is = cliente.getInputStream();
              os = cliente.getOutputStream();      
-             ipNodo= cliente.getInetAddress().getHostAddress().toString();
+         //    ipNodo= cliente.getInetAddress().getHostAddress().toString();
              ipServ= cliente.getRemoteSocketAddress().toString();
              this.setLocationRelativeTo(null);
-             Thread hilo = new Thread(new escucharCliente(pantalla,cliente));
-             Thread hiloActualizar = new Thread (new ActualizarPantalla(this.tproc,this.directorio,this.filesystem,this.cpu,this.ram,ipNodo,ipServ));
-             hilo.start();
-             hiloActualizar.start();
+             Thread hilo = new Thread(new escucharCliente(pantalla,cliente));    
+             hilo.start();        
+             this.hiloActualizar = new Thread (new ActualizarPantalla(this.tproc,this.directorio,this.filesystem,this.cpu,this.ram,ipNodo,ipServ));
+             hiloActualizar.start();     
         } catch (UnknownHostException ex) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }  
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -93,6 +100,11 @@ public class Cliente extends javax.swing.JFrame{
         jLabel3 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        listaNodos = new javax.swing.JList();
+        selecNodo = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         agregarNodo = new javax.swing.JMenuItem();
@@ -110,7 +122,7 @@ public class Cliente extends javax.swing.JFrame{
         mensaje.setRows(5);
         jScrollPane1.setViewportView(mensaje);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 290, 310, 90));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 300, 390, 90));
 
         enviar.setText("Enviar");
         enviar.addActionListener(new java.awt.event.ActionListener() {
@@ -118,20 +130,20 @@ public class Cliente extends javax.swing.JFrame{
                 enviarActionPerformed(evt);
             }
         });
-        getContentPane().add(enviar, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 400, 90, 60));
+        getContentPane().add(enviar, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 420, 90, 60));
 
         pantalla.setColumns(20);
         pantalla.setRows(5);
         pantalla.setEnabled(false);
         jScrollPane2.setViewportView(pantalla);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 40, 310, 220));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 50, 210, 210));
 
         cpu.setEditable(false);
-        getContentPane().add(cpu, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 60, 70, -1));
+        getContentPane().add(cpu, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 60, 70, -1));
 
         ram.setEditable(false);
-        getContentPane().add(ram, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 90, 70, -1));
+        getContentPane().add(ram, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 90, 70, -1));
 
         jLabel1.setText("Uso de CPU");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 61, -1, -1));
@@ -143,13 +155,13 @@ public class Cliente extends javax.swing.JFrame{
         jTextArea4.setRows(5);
         jScrollPane6.setViewportView(jTextArea4);
 
-        jTabbedPane2.addTab("CPU", jScrollPane6);
+        jTabbedPane2.addTab("Procesos", jScrollPane6);
 
         jTextArea5.setColumns(20);
         jTextArea5.setRows(5);
         jScrollPane7.setViewportView(jTextArea5);
 
-        jTabbedPane2.addTab("/home", jScrollPane7);
+        jTabbedPane2.addTab("Directorios", jScrollPane7);
 
         jTextArea6.setColumns(20);
         jTextArea6.setRows(5);
@@ -187,7 +199,7 @@ public class Cliente extends javax.swing.JFrame{
         ));
         jScrollPane4.setViewportView(directorio);
 
-        JTabbedPane1.addTab("/home", jScrollPane4);
+        JTabbedPane1.addTab("Directorios", jScrollPane4);
 
         filesystem.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -205,10 +217,10 @@ public class Cliente extends javax.swing.JFrame{
         JTabbedPane1.addTab("FileSystems", jScrollPane5);
 
         getContentPane().add(JTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 310, 220));
-        getContentPane().add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 520, 10));
+        getContentPane().add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 480, 10));
 
         jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        getContentPane().add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 40, 20, 440));
+        getContentPane().add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 30, 20, 450));
 
         jRadioButton1.setText("De forma controlada");
         jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -236,10 +248,33 @@ public class Cliente extends javax.swing.JFrame{
 
         jLabel3.setText("Terminar un proceso:");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 290, -1, -1));
-        getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 370, 180, 10));
+        getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 370, 160, 10));
 
         jLabel4.setText("Eliminar recursivamente:");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 380, -1, -1));
+
+        jLabel5.setText("Lista de nodos");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 30, -1, -1));
+
+        jScrollPane9.setViewportView(listaNodos);
+
+        getContentPane().add(jScrollPane9, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 50, 170, 180));
+
+        selecNodo.setText("Seleccionar Nodo");
+        selecNodo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selecNodoActionPerformed(evt);
+            }
+        });
+        getContentPane().add(selecNodo, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 240, -1, -1));
+
+        jButton1.setText("Refrescar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 120, 80, -1));
 
         jMenu1.setText("Nodo");
 
@@ -269,9 +304,7 @@ public class Cliente extends javax.swing.JFrame{
                 Chat chat2;
                 chat2= new Chat (mensaje.getText(),cliente.getLocalPort());
                 out.writeObject(chat2);
-                mensaje.setText("");
-
-            
+                mensaje.setText("");  
             } catch (UnknownHostException ex) {
                 System.err.println ("No se encuentra el host");
             } catch (IOException ex) {
@@ -295,9 +328,8 @@ public class Cliente extends javax.swing.JFrame{
 
     private void agregarNodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarNodoActionPerformed
         // TODO add your handling code here:
-        agregarNodo add= new agregarNodo();
+        agregarNodo add= new agregarNodo(user,this.listaNodos,listamodelo);
         add.setVisible(true);
-        
     }//GEN-LAST:event_agregarNodoActionPerformed
 
     private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton3ActionPerformed
@@ -323,6 +355,25 @@ public class Cliente extends javax.swing.JFrame{
             this.jRadioButton3.setSelected(false);
         }
     }//GEN-LAST:event_jRadioButton2ActionPerformed
+
+    private void selecNodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selecNodoActionPerformed
+        // TODO add your handling code here:
+        if (!listaNodos.getSelectedValue().equals("")){
+            ipNodo=listaNodos.getSelectedValue().toString();
+            this.hiloActualizar.stop();
+            this.hiloActualizar = new Thread (new ActualizarPantalla(this.tproc,this.directorio,this.filesystem,this.cpu,this.ram,ipNodo,ipServ));
+            hiloActualizar.start();
+        }
+    }//GEN-LAST:event_selecNodoActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        if (ipNodo!=null){
+            this.hiloActualizar.stop();
+            this.hiloActualizar = new Thread (new ActualizarPantalla(this.tproc,this.directorio,this.filesystem,this.cpu,this.ram,ipNodo,ipServ));
+            hiloActualizar.start();
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -365,10 +416,12 @@ public class Cliente extends javax.swing.JFrame{
     private javax.swing.JTable directorio;
     private javax.swing.JButton enviar;
     private javax.swing.JTable filesystem;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -383,6 +436,7 @@ public class Cliente extends javax.swing.JFrame{
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
@@ -390,9 +444,11 @@ public class Cliente extends javax.swing.JFrame{
     private javax.swing.JTextArea jTextArea4;
     private javax.swing.JTextArea jTextArea5;
     private javax.swing.JTextArea jTextArea6;
+    private javax.swing.JList listaNodos;
     private javax.swing.JTextArea mensaje;
     private javax.swing.JTextArea pantalla;
     private javax.swing.JTextField ram;
+    private javax.swing.JButton selecNodo;
     private javax.swing.JTable tproc;
     // End of variables declaration//GEN-END:variables
 

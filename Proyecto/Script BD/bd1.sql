@@ -20,20 +20,23 @@ FOREIGN KEY (fk_nodo) REFERENCES nodo(id)
 create table filesystem (
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
 nombre VARCHAR (20), 
+porcentaje float,
+valor VARCHAR(50),
 fk_nodo int,
 FOREIGN KEY (fk_nodo) REFERENCES nodo(id)
 );
 
 create table directorio (
-nombre VARCHAR (50) NOT NULL PRIMARY KEY, 
-valor VARCHAR(10),
-porcentaje float, 
+id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
+nombre VARCHAR (50), 
+valor VARCHAR(10), 
 fk_nodo int,
 FOREIGN KEY (fk_nodo) REFERENCES nodo(id)
 );
 
 create table proceso (
-pid INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
+id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+pid INT, 
 valor VARCHAR(20), 
 porcentaje float, 
 fk_nodo int,
