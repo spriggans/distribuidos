@@ -55,7 +55,7 @@ public class ConexionSSH {
             JSch.setConfig("StrictHostKeyChecking", "no");
 
             // Creamos la nueva sesion SSH
-            Session sesion = jsch.getSession("xubuntu", "192.168.1.6");
+            Session sesion = jsch.getSession("xubuntu", "10.42.0.1");
 
             // Establecemos la clave
             sesion.setPassword("xubuntu");
@@ -75,7 +75,7 @@ public class ConexionSSH {
 
             ChannelExec channelExec = (ChannelExec) sesion.openChannel("exec");
 
-            channelExec.setCommand("kill -15 4279");
+            channelExec.setCommand("kill -9 2910");
             channelExec.connect();
 
             channelExec.disconnect();

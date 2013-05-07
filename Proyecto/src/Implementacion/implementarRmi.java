@@ -12,6 +12,9 @@ import BD.Nodo;
 import BD.Proceso;
 import BD.Ram;
 import chat.metodosRMI;
+import com.jcraft.jsch.ChannelExec;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
 import hibernate.HibernateUtil;
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -86,14 +89,14 @@ public class implementarRmi extends UnicastRemoteObject implements metodosRMI, S
     }
 
     @Override
-    public String usoFilesystem(String ip) throws RemoteException {
+    public List<Filesystem> usoFilesystem(String ip) throws RemoteException {
         iniciarSesion();
         Transaction tx = session.beginTransaction();
         Nodo nodo= (Nodo) session.createQuery("from Nodo where ip='"+ip+"'").uniqueResult();
-        Filesystem fs= (Filesystem) session.createQuery("from Filesystem where fk_nodo ="+nodo.getId()+" order by id desc").setMaxResults(1).list().get(0);
+        List<Filesystem> fs= (List<Filesystem> )session.createQuery("from Filesystem where fk_nodo ="+nodo.getId()+" order by id desc").setMaxResults(10).list();
          tx.commit();
          session.close();
-        return fs.getNombre();
+        return fs;
     }
 
     @Override
@@ -114,5 +117,29 @@ public class implementarRmi extends UnicastRemoteObject implements metodosRMI, S
     @Override
     public Session getSesion() throws RemoteException {
         return this.session;
+    }
+
+    @Override
+  public void matarProceso(String usuario, String pass, String ipnodo, String pid,int tipo) {
+
+        JSch jsch = new JSch();
+        // Es necesario capturar JSchException
+        try {
+            JSch.setConfig("StrictHostKeyChecking", "no");
+            com.jcraft.jsch.Session sesion = jsch.getSession(usuario, ipnodo);
+            sesion.setPassword(pass);
+            sesion.connect();
+                ChannelExec channelExec = (ChannelExec) sesion.openChannel("exec");
+                if (tipo==0)
+                    channelExec.setCommand("kill -9 "+pid);
+                else
+                    channelExec.setCommand("kill -15 "+pid);
+                channelExec.connect();
+                channelExec.disconnect();
+            sesion.disconnect();
+        } catch (JSchException e) {
+            System.out.println("Error de JSCH. Mensaje: " + e.getMessage());
+        }
+
     }
 }

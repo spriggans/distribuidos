@@ -27,6 +27,8 @@ public class Filesystem  implements Serializable {
     @JoinColumn(name = "fk_nodo")
     private Nodo nodo;
     private String nombre;
+    private String valor;
+    private float porcentaje;
 
     public Filesystem() {
     }
@@ -58,5 +60,20 @@ public class Filesystem  implements Serializable {
         this.nombre = nombre;
     }
 
-    
+    public String getValor() {
+        return valor;
+    }
+
+    public void setValor(String valor) {
+        this.valor = valor;
+    }
+
+    public float getPorcentaje() {
+        return porcentaje;
+    }
+
+    public void setPorcentaje(float porcentaje) {
+        this.porcentaje = porcentaje;
+    }
+
 }

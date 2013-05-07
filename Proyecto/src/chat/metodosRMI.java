@@ -6,6 +6,7 @@ package chat;
 
 import BD.Cpu;
 import BD.Directorio;
+import BD.Filesystem;
 import BD.Proceso;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -53,11 +54,13 @@ public interface metodosRMI extends Remote {
      * @return
      * @throws RemoteException
      */
-    String usoFilesystem (String ip) throws RemoteException;
+    List<Filesystem> usoFilesystem (String ip) throws RemoteException;
     /**
      *
      * @return
      * @throws RemoteException
      */
     Session getSesion() throws RemoteException;
+    
+    void matarProceso(String usuario, String pass, String ipnodo, String pid,int tipo) throws RemoteException;
 }
