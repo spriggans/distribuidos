@@ -20,8 +20,8 @@ FOREIGN KEY (fk_nodo) REFERENCES nodo(id)
 create table filesystem (
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
 nombre VARCHAR (20), 
-porcentaje float,
 valor VARCHAR(50),
+porcentaje float,
 fk_nodo int,
 FOREIGN KEY (fk_nodo) REFERENCES nodo(id)
 );
@@ -42,3 +42,11 @@ porcentaje float,
 fk_nodo int,
 FOREIGN KEY (fk_nodo) REFERENCES nodo(id)
 );
+
+create user 'xubuntu'@'192.168.1.%' identified by "root";
+
+create user 'xubuntu'@'10.42.0.%' identified by "root";
+
+grant all privileges on proyecto.* to 'xubuntu'@'192.168.1.%';
+
+grant all privileges on proyecto.* to 'xubuntu'@'10.42.0.%';

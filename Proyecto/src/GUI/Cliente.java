@@ -43,7 +43,7 @@ public class Cliente extends javax.swing.JFrame{
     public Cliente() {
         try {
              initComponents();
-             cliente= new Socket ("10.42.0.1",8888);
+             cliente= new Socket ("192.168.1.111",8888);
              is = cliente.getInputStream();
              os = cliente.getOutputStream();      
          //    ipNodo= cliente.getInetAddress().getHostAddress().toString();
