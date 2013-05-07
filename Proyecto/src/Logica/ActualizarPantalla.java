@@ -57,6 +57,10 @@ public class ActualizarPantalla extends Thread{
          
     }
 
+    public void setIpNodo(String ipNodo) {
+        this.ipNodo = ipNodo;
+    }
+
     @Override
     public void run (){
         List <Proceso> topProceso;
