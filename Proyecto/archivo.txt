@@ -1,0 +1,6 @@
+S.ficheros     Tipo     Tamaño Usado  Disp Uso% Montado en
+/dev/sda6      ext4        23G   11G   11G  52% /
+udev           devtmpfs   2,9G  4,0K  2,9G   1% /dev
+tmpfs          tmpfs      1,2G  944K  1,2G   1% /run
+none           tmpfs      5,0M  4,0K  5,0M   1% /run/lock
+none           tmpfs      2,9G  1,1M  2,9G   1% /run/shm

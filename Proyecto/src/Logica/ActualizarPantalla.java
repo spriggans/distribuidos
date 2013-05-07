@@ -74,7 +74,7 @@ public class ActualizarPantalla extends Thread{
                     usoCpu= interfaz.usoCpu(ipNodo); // la ip es ipNodo                
                     usoRam= interfaz.usoRam(ipNodo);
                     topProceso= interfaz.obtenerTopProcesos(ipNodo);
-                    topDirectorio=interfaz.obtenerTopDirectorios(ipNodo);
+//                    topDirectorio=interfaz.obtenerTopDirectorios(ipNodo);
 
                     ram.setText(usoRam+"");
                     cpu.setText(usoCpu+" %"); 
@@ -91,7 +91,7 @@ public class ActualizarPantalla extends Thread{
                     todir.addColumn("Nombre");
                     todir.addColumn("Valor");
                     todir.addColumn("Porcentaje");
-                    todir.setNumRows(topDirectorio.size());
+  //                  todir.setNumRows(topDirectorio.size());
 
                     tofils.addColumn("Nombre");
                     tofils.addColumn("Usado");
@@ -106,13 +106,16 @@ public class ActualizarPantalla extends Thread{
                     }
                     this.pantallaProcesos.setModel(topro);
 
-                    for (int i=0; i<topDirectorio.size(); i++){
-                        topro.setValueAt(topDirectorio.get(i).getNombre().toString(), i, 0);
-                        topro.setValueAt(topDirectorio.get(i).getValor().toString(), i, 1);
-                        topro.setValueAt(topDirectorio.get(i).getPorcentaje(), i, 2);
-                    }
+    //                for (int i=0; i<topDirectorio.size(); i++){
+            //            topro.setValueAt(topDirectorio.get(i).getNombre().toString(), i, 0);
+          //              topro.setValueAt(topDirectorio.get(i).getValor().toString(), i, 1);
+        //                topro.setValueAt(topDirectorio.get(i).getPorcentaje(), i, 2);
+      //              }
                     this.pantallaDirectorio.setModel(todir);
 
+          
+
+                    
                     Thread.sleep(10000);             
                 }
             } catch (RemoteException | InterruptedException ex) {
