@@ -70,51 +70,54 @@ public class ActualizarPantalla extends Thread{
         
         while (true){
             try {
-                usoCpu= interfaz.usoCpu("192.168.1.1"); // la ip es ipNodo                
-                usoRam= interfaz.usoRam("192.168.1.1");
-                topProceso= interfaz.obtenerTopProcesos("192.168.1.1");
-                topDirectorio=interfaz.obtenerTopDirectorios("192.168.1.1");
-                
-                ram.setText(usoRam+"");
-                cpu.setText(usoCpu+" %"); 
-                
-                DefaultTableModel topro = new DefaultTableModel();
-                DefaultTableModel todir = new DefaultTableModel();
-                DefaultTableModel tofils = new DefaultTableModel();
-                
-                topro.addColumn("PID");
-                topro.addColumn("Porcentaje");
-                topro.addColumn("Valor");
-                topro.setNumRows(topProceso.size());
-                
-                todir.addColumn("Nombre");
-                todir.addColumn("Valor");
-                todir.addColumn("Porcentaje");
-                todir.setNumRows(topDirectorio.size());
-                
-                tofils.addColumn("Nombre");
-                tofils.addColumn("Usado");
-                tofils.addColumn("Porcentaje");
-                
-                
+                if (ipNodo!=null){
+                    usoCpu= interfaz.usoCpu(ipNodo); // la ip es ipNodo                
+                    usoRam= interfaz.usoRam(ipNodo);
+                    topProceso= interfaz.obtenerTopProcesos(ipNodo);
+                    topDirectorio=interfaz.obtenerTopDirectorios(ipNodo);
 
-                for (int i=0; i<topProceso.size(); i++){
-                    topro.setValueAt(topProceso.get(i).getPid().toString(), i, 0);
-                    topro.setValueAt(topProceso.get(i).getPorcentaje().toString(), i, 1);
-                    topro.setValueAt(topProceso.get(i).getValor().toString(), i, 2);
+                    ram.setText(usoRam+"");
+                    cpu.setText(usoCpu+" %"); 
+
+                    DefaultTableModel topro = new DefaultTableModel();
+                    DefaultTableModel todir = new DefaultTableModel();
+                    DefaultTableModel tofils = new DefaultTableModel();
+
+                    topro.addColumn("PID");
+                    topro.addColumn("Porcentaje");
+                    topro.addColumn("Valor");
+                    topro.setNumRows(topProceso.size());
+
+                    todir.addColumn("Nombre");
+                    todir.addColumn("Valor");
+                    todir.addColumn("Porcentaje");
+                    todir.setNumRows(topDirectorio.size());
+
+                    tofils.addColumn("Nombre");
+                    tofils.addColumn("Usado");
+                    tofils.addColumn("Porcentaje");
+
+
+
+                    for (int i=0; i<topProceso.size(); i++){
+                        topro.setValueAt(topProceso.get(i).getPid().toString(), i, 0);
+                        topro.setValueAt(topProceso.get(i).getPorcentaje().toString(), i, 1);
+                        topro.setValueAt(topProceso.get(i).getValor().toString(), i, 2);
+                    }
+                    this.pantallaProcesos.setModel(topro);
+
+                    for (int i=0; i<topDirectorio.size(); i++){
+                        topro.setValueAt(topDirectorio.get(i).getNombre().toString(), i, 0);
+                        topro.setValueAt(topDirectorio.get(i).getValor().toString(), i, 1);
+                        topro.setValueAt(topDirectorio.get(i).getPorcentaje(), i, 2);
+                    }
+                    this.pantallaDirectorio.setModel(todir);
+
+                    Thread.sleep(10000);             
                 }
-                this.pantallaProcesos.setModel(topro);
-                
-                for (int i=0; i<topDirectorio.size(); i++){
-                    topro.setValueAt(topDirectorio.get(i).getNombre().toString(), i, 0);
-                    topro.setValueAt(topDirectorio.get(i).getValor().toString(), i, 1);
-                    topro.setValueAt(topDirectorio.get(i).getPorcentaje(), i, 2);
-                }
-                this.pantallaDirectorio.setModel(todir);
-                
-                Thread.sleep(10000);             
             } catch (RemoteException | InterruptedException ex) {
                 Logger.getLogger(ActualizarPantalla.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println ("Se ha interrumpido el hilo");
             }
         }
     }

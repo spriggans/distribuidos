@@ -18,15 +18,16 @@ public class agregarNodo extends javax.swing.JFrame {
     private Usuario user= null;
     private ArrayList <Usuario> listau;
     private JList listanodos=null;
-    private DefaultListModel listamodelo = new DefaultListModel();
+    private DefaultListModel listamodelo;
 
     /**
      * Creates new form agregarNodo
      */
-    public agregarNodo(ArrayList <Usuario> lista, JList listanodos) {
+    public agregarNodo(ArrayList <Usuario> lista, JList listanodos,DefaultListModel listamodelo) {
         initComponents();
         listau=lista;
         this.listanodos=listanodos;
+        this.listamodelo=listamodelo;
     }
     
      public agregarNodo() {
@@ -135,8 +136,8 @@ public class agregarNodo extends javax.swing.JFrame {
         // TODO add your handling code here:
         user=new Usuario(this.ipNodo.getText(),this.User.getText(),this.pw.getText());
         listau.add(user);
-        listamodelo.addElement(user.getIpNodo());
-        listanodos.setModel(listamodelo);
+        this.listamodelo.addElement(user.getIpNodo());
+        listanodos.setModel(this.listamodelo);
         this.dispose();
     }//GEN-LAST:event_AgregarActionPerformed
 

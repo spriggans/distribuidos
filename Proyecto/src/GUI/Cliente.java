@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 
 /**
  *
@@ -33,6 +34,8 @@ public class Cliente extends javax.swing.JFrame{
     public String ipNodo=null;
     public String ipServ=null;
     private ArrayList <Usuario> user=new ArrayList <Usuario> ();
+    private Thread hiloActualizar;
+    private DefaultListModel listamodelo = new DefaultListModel();
 
     /**
      * Creates new form Cliente
@@ -47,7 +50,9 @@ public class Cliente extends javax.swing.JFrame{
              ipServ= cliente.getRemoteSocketAddress().toString();
              this.setLocationRelativeTo(null);
              Thread hilo = new Thread(new escucharCliente(pantalla,cliente));    
-             hilo.start(); 
+             hilo.start();        
+             this.hiloActualizar = new Thread (new ActualizarPantalla(this.tproc,this.directorio,this.filesystem,this.cpu,this.ram,ipNodo,ipServ));
+             hiloActualizar.start();     
         } catch (UnknownHostException ex) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -99,6 +104,7 @@ public class Cliente extends javax.swing.JFrame{
         jScrollPane9 = new javax.swing.JScrollPane();
         listaNodos = new javax.swing.JList();
         selecNodo = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         agregarNodo = new javax.swing.JMenuItem();
@@ -262,6 +268,14 @@ public class Cliente extends javax.swing.JFrame{
         });
         getContentPane().add(selecNodo, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 240, -1, -1));
 
+        jButton1.setText("Refrescar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 120, 80, -1));
+
         jMenu1.setText("Nodo");
 
         agregarNodo.setText("Agregar");
@@ -290,9 +304,7 @@ public class Cliente extends javax.swing.JFrame{
                 Chat chat2;
                 chat2= new Chat (mensaje.getText(),cliente.getLocalPort());
                 out.writeObject(chat2);
-                mensaje.setText("");
-
-            
+                mensaje.setText("");  
             } catch (UnknownHostException ex) {
                 System.err.println ("No se encuentra el host");
             } catch (IOException ex) {
@@ -316,7 +328,7 @@ public class Cliente extends javax.swing.JFrame{
 
     private void agregarNodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarNodoActionPerformed
         // TODO add your handling code here:
-        agregarNodo add= new agregarNodo(user,this.listaNodos);
+        agregarNodo add= new agregarNodo(user,this.listaNodos,listamodelo);
         add.setVisible(true);
     }//GEN-LAST:event_agregarNodoActionPerformed
 
@@ -348,10 +360,20 @@ public class Cliente extends javax.swing.JFrame{
         // TODO add your handling code here:
         if (!listaNodos.getSelectedValue().equals("")){
             ipNodo=listaNodos.getSelectedValue().toString();
-            Thread hiloActualizar = new Thread (new ActualizarPantalla(this.tproc,this.directorio,this.filesystem,this.cpu,this.ram,ipNodo,ipServ));
+            this.hiloActualizar.stop();
+            this.hiloActualizar = new Thread (new ActualizarPantalla(this.tproc,this.directorio,this.filesystem,this.cpu,this.ram,ipNodo,ipServ));
             hiloActualizar.start();
         }
     }//GEN-LAST:event_selecNodoActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        if (ipNodo!=null){
+            this.hiloActualizar.stop();
+            this.hiloActualizar = new Thread (new ActualizarPantalla(this.tproc,this.directorio,this.filesystem,this.cpu,this.ram,ipNodo,ipServ));
+            hiloActualizar.start();
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -394,6 +416,7 @@ public class Cliente extends javax.swing.JFrame{
     private javax.swing.JTable directorio;
     private javax.swing.JButton enviar;
     private javax.swing.JTable filesystem;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
