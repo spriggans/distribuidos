@@ -79,7 +79,7 @@ public class ActualizarPantalla extends Thread{
                     filesystem=interfaz.usoFilesystem(ipNodo);
                     topDirectorio=interfaz.obtenerTopDirectorios(ipNodo);
 
-                    ram.setText(usoRam+"");
+                    ram.setText(usoRam+" Kb");
                     cpu.setText(usoCpu+" %"); 
 
                     DefaultTableModel topro = new DefaultTableModel();
@@ -110,8 +110,8 @@ public class ActualizarPantalla extends Thread{
                     this.pantallaProcesos.setModel(topro);
 
                     for (int i=0; i<topDirectorio.size(); i++){
-                        topro.setValueAt(topDirectorio.get(i).getNombre().toString(), i, 0);
-                        topro.setValueAt(topDirectorio.get(i).getValor().toString(), i, 1);
+                        todir.setValueAt(topDirectorio.get(i).getNombre().toString(), i, 0);
+                        todir.setValueAt(topDirectorio.get(i).getValor().toString(), i, 1);
                     }
                     this.pantallaDirectorio.setModel(todir);
                     for (int i=0; i<filesystem.size(); i++){
