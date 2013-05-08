@@ -40,10 +40,10 @@ public class Cliente extends javax.swing.JFrame{
     /**
      * Creates new form Cliente
      */
-    public Cliente() {
+    public Cliente(String ip) {
         try {
              initComponents();
-             cliente= new Socket ("192.168.1.111",8888);
+             cliente= new Socket (ip,8888);
              is = cliente.getInputStream();
              os = cliente.getOutputStream();      
          //    ipNodo= cliente.getInetAddress().getHostAddress().toString();
@@ -405,7 +405,7 @@ public class Cliente extends javax.swing.JFrame{
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Cliente().setVisible(true);  
+                new Cliente(null).setVisible(true);  
             }
         });
     }

@@ -28,6 +28,7 @@ public class agregarNodo extends javax.swing.JFrame {
         listau=lista;
         this.listanodos=listanodos;
         this.listamodelo=listamodelo;
+         this.setLocationRelativeTo(null);
     }
     
      public agregarNodo() {
