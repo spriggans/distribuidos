@@ -120,7 +120,7 @@ public class implementarRmi extends UnicastRemoteObject implements metodosRMI, S
     }
 
     @Override
-    public void matarProceso(String usuario, String pass, String ipnodo, String pid, int tipo) {
+    public void matarProceso(String usuario, String pass, String ipnodo, String pid, int tipo) throws RemoteException{
 
         JSch jsch = new JSch();
         // Es necesario capturar JSchException
@@ -145,7 +145,7 @@ public class implementarRmi extends UnicastRemoteObject implements metodosRMI, S
     }
 
     @Override
-    public void ejecutarInstalacion(String usuario, String pass, String ipnodo) {
+    public void ejecutarInstalacion(String usuario, String pass, String ipnodo) throws RemoteException{
         JSch jsch = new JSch();
         // Es necesario capturar JSchException
         try {
