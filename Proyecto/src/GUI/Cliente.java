@@ -47,11 +47,12 @@ public class Cliente extends javax.swing.JFrame{
              is = cliente.getInputStream();
              os = cliente.getOutputStream();      
          //    ipNodo= cliente.getInetAddress().getHostAddress().toString();
+             this.jRadioButton1.setSelected(true);
              ipServ= cliente.getRemoteSocketAddress().toString();
              this.setLocationRelativeTo(null);
              Thread hilo = new Thread(new escucharCliente(pantalla,cliente));    
              hilo.start();        
-             this.hiloActualizar = new Thread (new ActualizarPantalla(this.tproc,this.directorio,this.filesystem,this.cpu,this.ram,ipNodo,ipServ));
+             this.hiloActualizar = new Thread (new ActualizarPantalla(this.tproc,this.directorio,this.filesystem,this.cpu,this.ram,ipNodo,ipServ,this.listaProcesos,this.listaDirectorios));
              hiloActualizar.start();     
         } catch (UnknownHostException ex) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
@@ -79,12 +80,10 @@ public class Cliente extends javax.swing.JFrame{
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jTabbedPane2 = new javax.swing.JTabbedPane();
-        jScrollPane6 = new javax.swing.JScrollPane();
-        jTextArea4 = new javax.swing.JTextArea();
-        jScrollPane7 = new javax.swing.JScrollPane();
-        jTextArea5 = new javax.swing.JTextArea();
         jScrollPane8 = new javax.swing.JScrollPane();
-        jTextArea6 = new javax.swing.JTextArea();
+        listaProcesos = new javax.swing.JList();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        listaDirectorios = new javax.swing.JList();
         JTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane3 = new javax.swing.JScrollPane();
         tproc = new javax.swing.JTable();
@@ -105,6 +104,7 @@ public class Cliente extends javax.swing.JFrame{
         listaNodos = new javax.swing.JList();
         selecNodo = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        botonV = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         agregarNodo = new javax.swing.JMenuItem();
@@ -151,23 +151,13 @@ public class Cliente extends javax.swing.JFrame{
         jLabel2.setText("Uso de RAM");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(338, 94, -1, -1));
 
-        jTextArea4.setColumns(20);
-        jTextArea4.setRows(5);
-        jScrollPane6.setViewportView(jTextArea4);
+        jScrollPane8.setViewportView(listaProcesos);
 
-        jTabbedPane2.addTab("Procesos", jScrollPane6);
+        jTabbedPane2.addTab("Procesos", jScrollPane8);
 
-        jTextArea5.setColumns(20);
-        jTextArea5.setRows(5);
-        jScrollPane7.setViewportView(jTextArea5);
+        jScrollPane10.setViewportView(listaDirectorios);
 
-        jTabbedPane2.addTab("Directorios", jScrollPane7);
-
-        jTextArea6.setColumns(20);
-        jTextArea6.setRows(5);
-        jScrollPane8.setViewportView(jTextArea6);
-
-        jTabbedPane2.addTab("FileSystems", jScrollPane8);
+        jTabbedPane2.addTab("Directorios", jScrollPane10);
 
         getContentPane().add(jTabbedPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 310, 220));
 
@@ -182,6 +172,7 @@ public class Cliente extends javax.swing.JFrame{
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tproc.setEnabled(false);
         jScrollPane3.setViewportView(tproc);
 
         JTabbedPane1.addTab("Procesos", jScrollPane3);
@@ -197,6 +188,7 @@ public class Cliente extends javax.swing.JFrame{
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        directorio.setEnabled(false);
         jScrollPane4.setViewportView(directorio);
 
         JTabbedPane1.addTab("Directorios", jScrollPane4);
@@ -212,6 +204,7 @@ public class Cliente extends javax.swing.JFrame{
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        filesystem.setEnabled(false);
         jScrollPane5.setViewportView(filesystem);
 
         JTabbedPane1.addTab("FileSystems", jScrollPane5);
@@ -276,6 +269,9 @@ public class Cliente extends javax.swing.JFrame{
         });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 120, 90, -1));
 
+        botonV.setText("Terminar Proceso");
+        getContentPane().add(botonV, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 430, 170, -1));
+
         jMenu1.setText("Nodo");
 
         agregarNodo.setText("Agregar");
@@ -337,6 +333,7 @@ public class Cliente extends javax.swing.JFrame{
           if (this.jRadioButton3.isSelected()){
             this.jRadioButton2.setSelected(false);
             this.jRadioButton1.setSelected(false);
+            this.botonV.setText("Eliminar Directorio");
         }
     }//GEN-LAST:event_jRadioButton3ActionPerformed
 
@@ -345,6 +342,7 @@ public class Cliente extends javax.swing.JFrame{
         if (this.jRadioButton1.isSelected()){
             this.jRadioButton2.setSelected(false);
             this.jRadioButton3.setSelected(false);
+            this.botonV.setText("Terminar Proceso");
         }
     }//GEN-LAST:event_jRadioButton1ActionPerformed
 
@@ -353,6 +351,7 @@ public class Cliente extends javax.swing.JFrame{
           if (this.jRadioButton2.isSelected()){
             this.jRadioButton1.setSelected(false);
             this.jRadioButton3.setSelected(false);
+            this.botonV.setText("Terminar Proceso");
         }
     }//GEN-LAST:event_jRadioButton2ActionPerformed
 
@@ -361,7 +360,7 @@ public class Cliente extends javax.swing.JFrame{
         if (!listaNodos.getSelectedValue().equals("")){
             ipNodo=listaNodos.getSelectedValue().toString();
             this.hiloActualizar.stop();
-            this.hiloActualizar = new Thread (new ActualizarPantalla(this.tproc,this.directorio,this.filesystem,this.cpu,this.ram,ipNodo,ipServ));
+            this.hiloActualizar = new Thread (new ActualizarPantalla(this.tproc,this.directorio,this.filesystem,this.cpu,this.ram,ipNodo,ipServ,this.listaProcesos,this.listaDirectorios));
             hiloActualizar.start();
         }
     }//GEN-LAST:event_selecNodoActionPerformed
@@ -370,7 +369,7 @@ public class Cliente extends javax.swing.JFrame{
         // TODO add your handling code here:
         if (ipNodo!=null){
             this.hiloActualizar.stop();
-            this.hiloActualizar = new Thread (new ActualizarPantalla(this.tproc,this.directorio,this.filesystem,this.cpu,this.ram,ipNodo,ipServ));
+            this.hiloActualizar = new Thread (new ActualizarPantalla(this.tproc,this.directorio,this.filesystem,this.cpu,this.ram,ipNodo,ipServ,this.listaProcesos,this.listaDirectorios));
             hiloActualizar.start();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -412,6 +411,7 @@ public class Cliente extends javax.swing.JFrame{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane JTabbedPane1;
     private javax.swing.JMenuItem agregarNodo;
+    private javax.swing.JButton botonV;
     private javax.swing.JTextField cpu;
     private javax.swing.JTable directorio;
     private javax.swing.JButton enviar;
@@ -429,22 +429,20 @@ public class Cliente extends javax.swing.JFrame{
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTextArea jTextArea4;
-    private javax.swing.JTextArea jTextArea5;
-    private javax.swing.JTextArea jTextArea6;
+    private javax.swing.JList listaDirectorios;
     private javax.swing.JList listaNodos;
+    private javax.swing.JList listaProcesos;
     private javax.swing.JTextArea mensaje;
     private javax.swing.JTextArea pantalla;
     private javax.swing.JTextField ram;

@@ -17,6 +17,8 @@ import java.util.logging.Logger;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -35,14 +37,18 @@ public class ActualizarPantalla extends Thread{
     private String ipNodo;
     private String ipServ;
     private metodosRMI interfaz= null;
+    private JList listaProcesos;
+    private JList listaDirectorio;
     
-    public ActualizarPantalla (JTable procesos, JTable directorio, JTable filesystem, JTextField cpu, JTextField ram, String ipNodo, String ipServ) {
+    public ActualizarPantalla (JTable procesos, JTable directorio, JTable filesystem, JTextField cpu, JTextField ram, String ipNodo, String ipServ, JList listaProcesos, JList listaDirectorio) {
          this.ipNodo=ipNodo;
          this.pantallaProcesos=procesos;
          this.pantallaDirectorio=directorio;
          this.pantallaFileS=filesystem;
          this.cpu=cpu;
          this.ram=ram;
+         this.listaProcesos=listaProcesos;
+         this.listaDirectorio=listaDirectorio;
          String toString = ipServ.split("/")[1].toString();
          String toString1 = toString.split(":")[0].toString();
          this.ipServ=toString1;
@@ -85,6 +91,8 @@ public class ActualizarPantalla extends Thread{
                     DefaultTableModel topro = new DefaultTableModel();
                     DefaultTableModel todir = new DefaultTableModel();
                     DefaultTableModel tofils = new DefaultTableModel();
+                    DefaultListModel toprolis = new DefaultListModel();
+                    DefaultListModel todirlis = new DefaultListModel();
 
                     topro.addColumn("PID");
                     topro.addColumn("Porcentaje");
@@ -106,8 +114,10 @@ public class ActualizarPantalla extends Thread{
                         topro.setValueAt(topProceso.get(i).getPid().toString(), i, 0);
                         topro.setValueAt(topProceso.get(i).getPorcentaje().toString(), i, 1);
                         topro.setValueAt(topProceso.get(i).getValor().toString(), i, 2);
+                        toprolis.addElement(topProceso.get(i).getPid()+" "+topProceso.get(i).getPorcentaje()+" "+topProceso.get(i).getValor());          
                     }
                     this.pantallaProcesos.setModel(topro);
+                    this.listaProcesos.setModel(toprolis);
 
                     for (int i=0; i<topDirectorio.size(); i++){
                         todir.setValueAt(topDirectorio.get(i).getNombre().toString(), i, 0);
