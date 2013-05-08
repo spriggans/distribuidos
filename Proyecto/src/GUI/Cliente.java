@@ -270,6 +270,11 @@ public class Cliente extends javax.swing.JFrame{
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 120, 90, -1));
 
         botonV.setText("Terminar Proceso");
+        botonV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonVActionPerformed(evt);
+            }
+        });
         getContentPane().add(botonV, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 430, 170, -1));
 
         jMenu1.setText("Nodo");
@@ -373,6 +378,13 @@ public class Cliente extends javax.swing.JFrame{
             hiloActualizar.start();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void botonVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVActionPerformed
+        // TODO add your handling code here:
+        if (this.botonV.getText().equals("Terminar Proceso"))
+            System.out.println ("");
+        else System.out.println ("Eliminar Directorio");
+    }//GEN-LAST:event_botonVActionPerformed
 
     /**
      * @param args the command line arguments
