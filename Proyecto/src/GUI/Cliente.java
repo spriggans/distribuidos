@@ -274,7 +274,7 @@ public class Cliente extends javax.swing.JFrame{
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 120, 80, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 120, 90, -1));
 
         jMenu1.setText("Nodo");
 
