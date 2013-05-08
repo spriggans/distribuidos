@@ -50,7 +50,7 @@ public class servidor {
         // TODO code application logic here
         try {
             
-            System.setProperty("java.rmi.server.hostname", "10.42.0.1");
+            System.setProperty("java.rmi.server.hostname", "172.16.68.158");
             implementarRmi rmi= new implementarRmi();
             Registry reg = LocateRegistry.createRegistry(1099);
             reg.rebind ("servidor", rmi);
