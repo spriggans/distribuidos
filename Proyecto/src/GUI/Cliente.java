@@ -122,7 +122,7 @@ public class Cliente extends javax.swing.JFrame{
         mensaje.setRows(5);
         jScrollPane1.setViewportView(mensaje);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 300, 390, 90));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 390, 290, -1));
 
         enviar.setText("Enviar");
         enviar.addActionListener(new java.awt.event.ActionListener() {
@@ -130,20 +130,20 @@ public class Cliente extends javax.swing.JFrame{
                 enviarActionPerformed(evt);
             }
         });
-        getContentPane().add(enviar, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 420, 90, 60));
+        getContentPane().add(enviar, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 390, 90, 90));
 
         pantalla.setColumns(20);
         pantalla.setRows(5);
         pantalla.setEnabled(false);
         jScrollPane2.setViewportView(pantalla);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 50, 210, 210));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 250, 390, 130));
 
         cpu.setEditable(false);
-        getContentPane().add(cpu, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 60, 70, -1));
+        getContentPane().add(cpu, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 60, 100, -1));
 
         ram.setEditable(false);
-        getContentPane().add(ram, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 90, 70, -1));
+        getContentPane().add(ram, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 90, 100, -1));
 
         jLabel1.setText("Uso de CPU");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 61, -1, -1));
@@ -220,7 +220,7 @@ public class Cliente extends javax.swing.JFrame{
         getContentPane().add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 480, 10));
 
         jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        getContentPane().add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 30, 20, 450));
+        getContentPane().add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 30, 20, 450));
 
         jRadioButton1.setText("De forma controlada");
         jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -254,11 +254,11 @@ public class Cliente extends javax.swing.JFrame{
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 380, -1, -1));
 
         jLabel5.setText("Lista de nodos");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 30, -1, -1));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 40, -1, -1));
 
         jScrollPane9.setViewportView(listaNodos);
 
-        getContentPane().add(jScrollPane9, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 50, 170, 180));
+        getContentPane().add(jScrollPane9, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 70, 230, 150));
 
         selecNodo.setText("Seleccionar Nodo");
         selecNodo.addActionListener(new java.awt.event.ActionListener() {
@@ -266,7 +266,7 @@ public class Cliente extends javax.swing.JFrame{
                 selecNodoActionPerformed(evt);
             }
         });
-        getContentPane().add(selecNodo, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 240, -1, -1));
+        getContentPane().add(selecNodo, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 70, 140, -1));
 
         jButton1.setText("Refrescar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {

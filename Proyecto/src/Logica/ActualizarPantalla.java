@@ -5,6 +5,7 @@
 package Logica;
 
 import BD.Directorio;
+import BD.Filesystem;
 import BD.Proceso;
 import GUI.Cliente;
 import chat.metodosRMI;
@@ -65,6 +66,7 @@ public class ActualizarPantalla extends Thread{
     public void run (){
         List <Proceso> topProceso;
         List <Directorio> topDirectorio;
+        List <Filesystem> filesystem;
         float usoCpu;
         float usoRam;
         
@@ -74,6 +76,7 @@ public class ActualizarPantalla extends Thread{
                     usoCpu= interfaz.usoCpu(ipNodo); // la ip es ipNodo                
                     usoRam= interfaz.usoRam(ipNodo);
                     topProceso= interfaz.obtenerTopProcesos(ipNodo);
+                    filesystem=interfaz.usoFilesystem(ipNodo);
 //                    topDirectorio=interfaz.obtenerTopDirectorios(ipNodo);
 
                     ram.setText(usoRam+"");
@@ -96,6 +99,7 @@ public class ActualizarPantalla extends Thread{
                     tofils.addColumn("Nombre");
                     tofils.addColumn("Usado");
                     tofils.addColumn("Porcentaje");
+                    tofils.setNumRows(filesystem.size());
 
 
 
@@ -112,7 +116,12 @@ public class ActualizarPantalla extends Thread{
         //                topro.setValueAt(topDirectorio.get(i).getPorcentaje(), i, 2);
       //              }
                     this.pantallaDirectorio.setModel(todir);
-
+                    for (int i=0; i<filesystem.size(); i++){
+                        tofils.setValueAt(filesystem.get(i).getNombre().toString(), i, 0);
+                        tofils.setValueAt(filesystem.get(i).getValor().toString(), i, 1);
+                        tofils.setValueAt(filesystem.get(i).getPorcentaje(), i, 2);
+                    }
+                    this.pantallaFileS.setModel(tofils);
           
 
                     
