@@ -29,7 +29,7 @@ public class Directorio {
     private String nombre;
     
      private String valor;
-     private float porcentaje;
+  
 
     public Directorio() {
     }
@@ -38,11 +38,11 @@ public class Directorio {
     public Directorio(String nombre) {
         this.nombre = nombre;
     }
-    public Directorio(String nombre, Nodo nodo, String valor, float porcentaje) {
+    public Directorio(String nombre, Nodo nodo, String valor) {
        this.nombre = nombre;
        this.nodo = nodo;
        this.valor = valor;
-       this.porcentaje = porcentaje;
+ 
     }
    
         public Long getId() {
@@ -74,12 +74,6 @@ public class Directorio {
     public void setValor(String valor) {
         this.valor = valor;
     }
-    public float getPorcentaje() {
-        return this.porcentaje;
-    }
-    
-    public void setPorcentaje(float porcentaje) {
-        this.porcentaje = porcentaje;
-    }
+
 
 }

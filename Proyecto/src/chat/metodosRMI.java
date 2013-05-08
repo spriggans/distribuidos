@@ -63,4 +63,6 @@ public interface metodosRMI extends Remote {
     Session getSesion() throws RemoteException;
     
     void matarProceso(String usuario, String pass, String ipnodo, String pid,int tipo) throws RemoteException;
+    
+    void ejecutarInstalacion(String usuario, String pass, String ipnodo);
 }

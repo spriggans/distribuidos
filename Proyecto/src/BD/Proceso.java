@@ -22,13 +22,13 @@ public class Proceso implements java.io.Serializable {
 
  @Id
     @GeneratedValue
-    private Long pid;
+  private Long id;
     @ManyToOne
     @JoinColumn(name = "fk_nodo")
     private Nodo nodo;
      private String valor;
      private Float porcentaje;
-
+  private Long pid;
     public Proceso() {
     }
 
@@ -37,7 +37,13 @@ public class Proceso implements java.io.Serializable {
        this.valor = valor;
        this.porcentaje = porcentaje;
     }
-   
+     public Long getId() {
+        return this.id;
+    }
+    
+    public void setId(Long id) {
+        this.id = id;
+    }
     public Long getPid() {
         return this.pid;
     }
