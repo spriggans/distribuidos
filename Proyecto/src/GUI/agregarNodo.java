@@ -4,6 +4,7 @@
  */
 package GUI;
 
+import Logica.ActualizarPantalla;
 import Logica.Usuario;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,16 +20,18 @@ public class agregarNodo extends javax.swing.JFrame {
     private ArrayList <Usuario> listau;
     private JList listanodos=null;
     private DefaultListModel listamodelo;
+    private String ipServ;
 
     /**
      * Creates new form agregarNodo
      */
-    public agregarNodo(ArrayList <Usuario> lista, JList listanodos,DefaultListModel listamodelo) {
+    public agregarNodo(ArrayList <Usuario> lista, JList listanodos,DefaultListModel listamodelo, String ipServ) {
         initComponents();
         listau=lista;
         this.listanodos=listanodos;
         this.listamodelo=listamodelo;
-         this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(null);
+        this.ipServ=ipServ;
     }
     
      public agregarNodo() {
@@ -139,6 +142,8 @@ public class agregarNodo extends javax.swing.JFrame {
         listau.add(user);
         this.listamodelo.addElement(user.getIpNodo());
         listanodos.setModel(this.listamodelo);
+        ActualizarPantalla ac= new ActualizarPantalla(ipServ);
+        ac.instalar(user.getUsuario(), user.getPassword(), user.getIpNodo());
         this.dispose();
     }//GEN-LAST:event_AgregarActionPerformed
 

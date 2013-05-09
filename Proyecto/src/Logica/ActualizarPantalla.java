@@ -96,6 +96,14 @@ public class ActualizarPantalla extends Thread{
             Logger.getLogger(ActualizarPantalla.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public void instalar(String user, String password, String ip){
+        try {
+            interfaz.ejecutarInstalacion(user, password, ip);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ActualizarPantalla.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public void setIpNodo(String ipNodo) {
         this.ipNodo = ipNodo;

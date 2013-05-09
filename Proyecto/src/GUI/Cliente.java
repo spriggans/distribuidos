@@ -16,7 +16,6 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
@@ -330,7 +329,7 @@ public class Cliente extends javax.swing.JFrame{
 
     private void agregarNodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarNodoActionPerformed
         // TODO add your handling code here:
-        agregarNodo add= new agregarNodo(user,this.listaNodos,listamodelo);
+        agregarNodo add= new agregarNodo(user,this.listaNodos,listamodelo,ipServ);
         add.setVisible(true);
     }//GEN-LAST:event_agregarNodoActionPerformed
 
