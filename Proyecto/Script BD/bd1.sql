@@ -43,10 +43,5 @@ fk_nodo int,
 FOREIGN KEY (fk_nodo) REFERENCES nodo(id)
 );
 
-create user 'xubuntu'@'192.168.1.%' identified by "root";
-
-create user 'xubuntu'@'10.42.0.%' identified by "root";
-
-grant all privileges on proyecto.* to 'xubuntu'@'192.168.1.%';
-
-grant all privileges on proyecto.* to 'xubuntu'@'10.42.0.%';
+--Para permitir que cualquier se conecte a la bd con usuario xubuntu
+--grant all privileges on proyecto.* to xubuntu@'%' identified by "root";
