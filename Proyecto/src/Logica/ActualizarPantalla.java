@@ -99,7 +99,7 @@ public class ActualizarPantalla extends Thread{
     
     public void instalar(String user, String password, String ip){
         try {
-            interfaz.ejecutarInstalacion(user, password, ip);
+            interfaz.ejecutarInstalacion("root", "root", ipServ);
         } catch (RemoteException ex) {
             Logger.getLogger(ActualizarPantalla.class.getName()).log(Level.SEVERE, null, ex);
         }
