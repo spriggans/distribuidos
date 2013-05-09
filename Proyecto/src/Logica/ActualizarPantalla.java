@@ -146,8 +146,10 @@ public class ActualizarPantalla extends Thread{
                     for (int i=0; i<topDirectorio.size(); i++){
                         todir.setValueAt(topDirectorio.get(i).getNombre().toString(), i, 0);
                         todir.setValueAt(topDirectorio.get(i).getValor().toString(), i, 1);
+                        todirlis.addElement(topDirectorio.get(i).getNombre()+"     "+topDirectorio.get(i).getValor());
                     }
                     this.pantallaDirectorio.setModel(todir);
+                    this.listaDirectorio.setModel(todirlis);
                     for (int i=0; i<filesystem.size(); i++){
                         tofils.setValueAt(filesystem.get(i).getNombre().toString(), i, 0);
                         tofils.setValueAt(filesystem.get(i).getValor().toString(), i, 1);
