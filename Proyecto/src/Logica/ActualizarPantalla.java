@@ -63,6 +63,30 @@ public class ActualizarPantalla extends Thread{
         }
          
     }
+    
+    public ActualizarPantalla (String ipServ){
+         String toString = ipServ.split("/")[1].toString();
+         String toString1 = toString.split(":")[0].toString();
+         this.ipServ=toString1;
+         System.setProperty("java.security.policy", "client.policy");
+         System.setSecurityManager(new RMISecurityManager());
+         String url = "rmi://"+this.ipServ+"/";
+         try {
+             Context c= new InitialContext();
+             interfaz= (metodosRMI) c.lookup(url+ "servidor");
+          //   interfaz.matarProceso(user, password, ip, pid, tipo);
+         } catch (NamingException ex) {
+            System.err.println ("Error en el Naming");
+        } 
+    }
+    
+    public void MatarProceso (String user, String password, String ip,String pid, int tipo){
+        try {
+            interfaz.matarProceso(user, password, ip, pid, tipo);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ActualizarPantalla.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }   
 
     public void setIpNodo(String ipNodo) {
         this.ipNodo = ipNodo;

@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -381,8 +382,36 @@ public class Cliente extends javax.swing.JFrame{
 
     private void botonVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVActionPerformed
         // TODO add your handling code here:
-        if (this.botonV.getText().equals("Terminar Proceso"))
-            System.out.println ("");
+        Usuario u=null;
+        for (int i=0; i<user.size(); i++)
+                if (user.get(i).getIpNodo().equals(ipNodo))
+                    u=user.get(i);  
+        
+        if (u!= null && this.botonV.getText().equals("Terminar Proceso") && this.jRadioButton1.isSelected()){        
+                int seleccion= this.listaProcesos.getSelectedIndex();
+                DefaultTableModel dft= new DefaultTableModel();
+                DefaultListModel dlm= new DefaultListModel();
+                dft=(DefaultTableModel) this.tproc.getModel();
+                String pid=dft.getValueAt(seleccion, 0).toString();
+                ActualizarPantalla ac= new ActualizarPantalla(ipServ);
+                ac.MatarProceso(u.getUsuario(), u.getPassword(), u.getIpNodo(), pid, 1);
+                dlm.remove(seleccion);
+                dft.removeRow(seleccion);
+                this.tproc.setModel(dft);
+                this.listaProcesos.setModel(dlm);
+        } else if (u!=null && this.botonV.getText().equals("Terminar Proceso") && this.jRadioButton2.isSelected()){
+                int seleccion= this.listaProcesos.getSelectedIndex();
+                DefaultTableModel dft= new DefaultTableModel();
+                DefaultListModel dlm= new DefaultListModel();
+                dft=(DefaultTableModel) this.tproc.getModel();
+                String pid=dft.getValueAt(seleccion, 0).toString();
+                ActualizarPantalla ac= new ActualizarPantalla(ipServ);
+                ac.MatarProceso(u.getUsuario(), u.getPassword(), u.getIpNodo(), pid, 0);
+                dlm.remove(seleccion);
+                dft.removeRow(seleccion);
+                this.tproc.setModel(dft);
+                this.listaProcesos.setModel(dlm);
+        }
         else System.out.println ("Eliminar Directorio");
     }//GEN-LAST:event_botonVActionPerformed
 
