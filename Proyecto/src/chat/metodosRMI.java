@@ -65,4 +65,6 @@ public interface metodosRMI extends Remote {
     void matarProceso(String usuario, String pass, String ipnodo, String pid,int tipo) throws RemoteException;
     
     void ejecutarInstalacion(String usuario, String pass, String ipnodo) throws RemoteException;
+    
+     void eliminarDirectorio(String usuario, String pass, String ipnodo, String nombre) throws RemoteException;
 }
