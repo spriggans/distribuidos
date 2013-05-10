@@ -154,7 +154,7 @@ public class implementarRmi extends UnicastRemoteObject implements metodosRMI, S
             sesion.setPassword(pass);
             sesion.connect();
                 ChannelExec channelExec = (ChannelExec) sesion.openChannel("exec");
-                channelExec.setCommand("./instalacion.sh");
+                channelExec.setCommand("/home/angel/Escritorio/Proyecto/distribuidos/Proyecto/./instalacion.sh");
                 channelExec.connect();
                 channelExec.disconnect();
             sesion.disconnect();

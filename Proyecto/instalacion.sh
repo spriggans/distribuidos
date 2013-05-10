@@ -3,9 +3,9 @@
 #crontab -l ; echo "0 4 * * * myscript"| crontab - 
 
 
-sshpass -p 'xubuntu' scp -o StrictHostKeyChecking=no /home/angel/Escritorio/Proyecto/distribuidos/Proyecto/nuevo.py xubuntu@10.42.0.40:/home/xubuntu/Escritorio
+sshpass -p 'xubuntu' scp -o StrictHostKeyChecking=no /home/angel/Escritorio/Proyecto/distribuidos/Proyecto/nuevo.py xubuntu@192.168.1.100:/home/xubuntu/Escritorio
 
-sshpass -p 'xubuntu' ssh xubuntu@10.42.0.40 'echo "*/5 * * * * /home/xubuntu/Escritorio/nuevo.py" | crontab -'
+sshpass -p 'xubuntu' ssh xubuntu@192.168.1.100 'echo "*/5 * * * * /home/xubuntu/Escritorio/nuevo.py" | crontab -'
 
 
 
