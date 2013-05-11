@@ -164,6 +164,26 @@ public class implementarRmi extends UnicastRemoteObject implements metodosRMI, S
 
     }
     
+        @Override
+    public void desinstalar(String usuario, String pass, String ipnodo) throws RemoteException{
+        JSch jsch = new JSch();
+        // Es necesario capturar JSchException
+        try {
+            JSch.setConfig("StrictHostKeyChecking", "no");
+            com.jcraft.jsch.Session sesion = jsch.getSession(usuario, ipnodo);
+            sesion.setPassword(pass);
+            sesion.connect();
+                ChannelExec channelExec = (ChannelExec) sesion.openChannel("exec");
+                channelExec.setCommand("/home/angel/Escritorio/Proyecto/distribuidos/Proyecto/./desinstalar.sh");
+                channelExec.connect();
+                channelExec.disconnect();
+            sesion.disconnect();
+        } catch (JSchException e) {
+            System.out.println("Error de JSCH. Mensaje: " + e.getMessage());
+        }
+
+    }
+    
     
      public void eliminarDirectorio(String usuario, String pass, String ipnodo, String nombre) throws RemoteException{
         JSch jsch = new JSch();
@@ -175,6 +195,26 @@ public class implementarRmi extends UnicastRemoteObject implements metodosRMI, S
             sesion.connect();
                 ChannelExec channelExec = (ChannelExec) sesion.openChannel("exec");
                 channelExec.setCommand("rm -r -f "+nombre);
+                channelExec.connect();
+                channelExec.disconnect();
+            sesion.disconnect();
+        } catch (JSchException e) {
+            System.out.println("Error de JSCH. Mensaje: " + e.getMessage());
+        }
+
+    }
+     
+    @Override
+        public void monitorearInmediato(String usuario, String pass, String ipnodo) throws RemoteException{
+        JSch jsch = new JSch();
+        // Es necesario capturar JSchException
+        try {
+            JSch.setConfig("StrictHostKeyChecking", "no");
+            com.jcraft.jsch.Session sesion = jsch.getSession(usuario, ipnodo);
+            sesion.setPassword(pass);
+            sesion.connect();
+                ChannelExec channelExec = (ChannelExec) sesion.openChannel("exec");
+                channelExec.setCommand("/home/angel/Escritorio/Proyecto/distribuidos/Proyecto/ ./nuevo.py ");
                 channelExec.connect();
                 channelExec.disconnect();
             sesion.disconnect();
