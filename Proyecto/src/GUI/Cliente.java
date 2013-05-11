@@ -105,10 +105,10 @@ public class Cliente extends javax.swing.JFrame{
         selecNodo = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         botonV = new javax.swing.JButton();
+        desinstalar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         agregarNodo = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -277,6 +277,14 @@ public class Cliente extends javax.swing.JFrame{
         });
         getContentPane().add(botonV, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 430, 170, -1));
 
+        desinstalar.setText("Desinstalar");
+        desinstalar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                desinstalarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(desinstalar, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 110, 140, -1));
+
         jMenu1.setText("Nodo");
 
         agregarNodo.setText("Agregar");
@@ -288,9 +296,6 @@ public class Cliente extends javax.swing.JFrame{
         jMenu1.add(agregarNodo);
 
         jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -374,6 +379,12 @@ public class Cliente extends javax.swing.JFrame{
         // TODO add your handling code here:
         if (ipNodo!=null){
             this.hiloActualizar.stop();
+            Usuario u=null;
+            for (int i=0; i<user.size(); i++)
+                if (user.get(i).getIpNodo().equals(ipNodo))
+                    u=user.get(i);   
+            ActualizarPantalla ac= new ActualizarPantalla(ipServ);
+            ac.refrescar(u.getUsuario(), u.getPassword(), u.getIpNodo());
             this.hiloActualizar = new Thread (new ActualizarPantalla(this.tproc,this.directorio,this.filesystem,this.cpu,this.ram,ipNodo,ipServ,this.listaProcesos,this.listaDirectorios));
             hiloActualizar.start();
         }
@@ -390,6 +401,7 @@ public class Cliente extends javax.swing.JFrame{
                 int seleccion= this.listaProcesos.getSelectedIndex();
                 DefaultTableModel dft= new DefaultTableModel();
                 DefaultListModel dlm= new DefaultListModel();
+                dlm= (DefaultListModel) this.listaProcesos.getModel();
                 dft=(DefaultTableModel) this.tproc.getModel();
                 String pid=dft.getValueAt(seleccion, 0).toString();
                 ActualizarPantalla ac= new ActualizarPantalla(ipServ);
@@ -401,7 +413,7 @@ public class Cliente extends javax.swing.JFrame{
         } else if (u!=null && this.botonV.getText().equals("Terminar Proceso") && this.jRadioButton2.isSelected()){
                 int seleccion= this.listaProcesos.getSelectedIndex();
                 DefaultTableModel dft= new DefaultTableModel();
-                DefaultListModel dlm= new DefaultListModel();
+                DefaultListModel dlm= (DefaultListModel) this.listaProcesos.getModel();
                 dft=(DefaultTableModel) this.tproc.getModel();
                 String pid=dft.getValueAt(seleccion, 0).toString();
                 ActualizarPantalla ac= new ActualizarPantalla(ipServ);
@@ -411,8 +423,40 @@ public class Cliente extends javax.swing.JFrame{
                 this.tproc.setModel(dft);
                 this.listaProcesos.setModel(dlm);
         }
-        else System.out.println ("Eliminar Directorio");
+        else if (u!=null && !this.botonV.getText().equals("Terminar Proceso") && this.jRadioButton3.isSelected()){
+                int seleccion= this.listaDirectorios.getSelectedIndex();
+                DefaultTableModel dtm= (DefaultTableModel) this.directorio.getModel();
+                DefaultListModel dlm= (DefaultListModel) this.listaDirectorios.getModel();
+                String nombredir=dtm.getValueAt(seleccion, 0).toString();
+                ActualizarPantalla ac= new ActualizarPantalla(ipServ);
+                ac.EliminarDirectorio(u.getUsuario(), u.getPassword(), u.getIpNodo(), nombredir);
+                dlm.remove(seleccion);
+                dtm.removeRow(seleccion);
+                this.directorio.setModel(dtm);
+                this.listaDirectorios.setModel(dlm);
+        }
     }//GEN-LAST:event_botonVActionPerformed
+
+    private void desinstalarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desinstalarActionPerformed
+        // TODO add your handling code here:
+        if (!listaNodos.getSelectedValue().equals("")){
+            ipNodo=listaNodos.getSelectedValue().toString();
+            this.hiloActualizar.stop();
+            Usuario u= null;
+            for (int i=0; i<user.size(); i++){
+                if (user.get(i).getIpNodo().equals(ipNodo)){
+                    u=user.get(i);
+                    break;
+                }
+            }
+            ActualizarPantalla ap= new ActualizarPantalla(ipServ);
+            ap.desinstalar(u.getUsuario(), u.getPassword(), u.getIpNodo());
+            DefaultListModel d= (DefaultListModel) this.listaNodos.getModel();
+            user.remove(listaNodos.getSelectedIndex());
+            d.remove(listaNodos.getSelectedIndex());          
+            listaNodos.setModel(d);
+        }
+    }//GEN-LAST:event_desinstalarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -453,6 +497,7 @@ public class Cliente extends javax.swing.JFrame{
     private javax.swing.JMenuItem agregarNodo;
     private javax.swing.JButton botonV;
     private javax.swing.JTextField cpu;
+    private javax.swing.JButton desinstalar;
     private javax.swing.JTable directorio;
     private javax.swing.JButton enviar;
     private javax.swing.JTable filesystem;
@@ -463,7 +508,6 @@ public class Cliente extends javax.swing.JFrame{
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;

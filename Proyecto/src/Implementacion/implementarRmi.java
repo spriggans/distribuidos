@@ -145,16 +145,16 @@ public class implementarRmi extends UnicastRemoteObject implements metodosRMI, S
     }
 
     @Override
-    public void ejecutarInstalacion(String usuario, String pass, String ipnodo) throws RemoteException{
+    public void ejecutarInstalacion(String usuario, String pass, String ipserv,String usuNodo, String passNodo, String ipnodo) throws RemoteException{
         JSch jsch = new JSch();
         // Es necesario capturar JSchException
         try {
             JSch.setConfig("StrictHostKeyChecking", "no");
-            com.jcraft.jsch.Session sesion = jsch.getSession(usuario, ipnodo);
+            com.jcraft.jsch.Session sesion = jsch.getSession(usuario, ipserv);
             sesion.setPassword(pass);
             sesion.connect();
                 ChannelExec channelExec = (ChannelExec) sesion.openChannel("exec");
-                channelExec.setCommand("/home/angel/Escritorio/Proyecto/distribuidos/Proyecto/./instalacion.sh");
+                channelExec.setCommand("/home/angel/Escritorio/Proyecto/distribuidos/Proyecto/./instalacion.sh "+usuNodo+" "+passNodo+" "+ipnodo);
                 channelExec.connect();
                 channelExec.disconnect();
             sesion.disconnect();
@@ -165,16 +165,16 @@ public class implementarRmi extends UnicastRemoteObject implements metodosRMI, S
     }
     
         @Override
-    public void desinstalar(String usuario, String pass, String ipnodo) throws RemoteException{
+    public void desinstalar(String usuario, String pass, String ipserv,String usuNodo, String passNodo, String ipnodo) throws RemoteException{
         JSch jsch = new JSch();
         // Es necesario capturar JSchException
         try {
             JSch.setConfig("StrictHostKeyChecking", "no");
-            com.jcraft.jsch.Session sesion = jsch.getSession(usuario, ipnodo);
+            com.jcraft.jsch.Session sesion = jsch.getSession(usuario, ipserv);
             sesion.setPassword(pass);
             sesion.connect();
                 ChannelExec channelExec = (ChannelExec) sesion.openChannel("exec");
-                channelExec.setCommand("/home/angel/Escritorio/Proyecto/distribuidos/Proyecto/./desinstalar.sh");
+                channelExec.setCommand("/home/angel/Escritorio/Proyecto/distribuidos/Proyecto/./desinstalar.sh "+usuNodo+" "+passNodo+" "+ipnodo);
                 channelExec.connect();
                 channelExec.disconnect();
             sesion.disconnect();
@@ -185,6 +185,7 @@ public class implementarRmi extends UnicastRemoteObject implements metodosRMI, S
     }
     
     
+    @Override
      public void eliminarDirectorio(String usuario, String pass, String ipnodo, String nombre) throws RemoteException{
         JSch jsch = new JSch();
         // Es necesario capturar JSchException
@@ -194,7 +195,11 @@ public class implementarRmi extends UnicastRemoteObject implements metodosRMI, S
             sesion.setPassword(pass);
             sesion.connect();
                 ChannelExec channelExec = (ChannelExec) sesion.openChannel("exec");
-                channelExec.setCommand("rm -r -f "+nombre);
+                System.out.println(usuario);
+                System.out.println(pass);
+                System.out.println(ipnodo);
+                System.out.println(nombre);
+                channelExec.setCommand("rm -rf "+nombre);
                 channelExec.connect();
                 channelExec.disconnect();
             sesion.disconnect();
@@ -214,7 +219,7 @@ public class implementarRmi extends UnicastRemoteObject implements metodosRMI, S
             sesion.setPassword(pass);
             sesion.connect();
                 ChannelExec channelExec = (ChannelExec) sesion.openChannel("exec");
-                channelExec.setCommand("/home/angel/Escritorio/Proyecto/distribuidos/Proyecto/ ./nuevo.py ");
+                channelExec.setCommand("/home/xubuntu/Escritorio/./nuevo.py");
                 channelExec.connect();
                 channelExec.disconnect();
             sesion.disconnect();

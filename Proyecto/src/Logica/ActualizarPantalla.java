@@ -91,7 +91,7 @@ public class ActualizarPantalla extends Thread{
     public void EliminarDirectorio (String user, String password, String ip, String directorio){
         try {
             //llamar a eliminar directorio
-             interfaz.matarProceso(user, password, ip, null, 0);
+             interfaz.eliminarDirectorio(user, password, ip, directorio);
         } catch (RemoteException ex) {
             Logger.getLogger(ActualizarPantalla.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -99,7 +99,15 @@ public class ActualizarPantalla extends Thread{
     
     public void instalar(String user, String password, String ip){
         try {
-            interfaz.ejecutarInstalacion("angel", "123456", ipServ);
+            interfaz.ejecutarInstalacion("angel", "123456", ipServ,user,password,ip);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ActualizarPantalla.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void desinstalar(String user, String password, String ip){
+        try {
+            interfaz.desinstalar("angel", "123456", ipServ,user,password,ip);
         } catch (RemoteException ex) {
             Logger.getLogger(ActualizarPantalla.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -107,6 +115,14 @@ public class ActualizarPantalla extends Thread{
 
     public void setIpNodo(String ipNodo) {
         this.ipNodo = ipNodo;
+    }
+    
+    public void refrescar (String user, String password, String ip){
+         try {
+            interfaz.monitorearInmediato(user, password, ip);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ActualizarPantalla.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
@@ -172,11 +188,8 @@ public class ActualizarPantalla extends Thread{
                         tofils.setValueAt(filesystem.get(i).getValor().toString(), i, 1);
                         tofils.setValueAt(filesystem.get(i).getPorcentaje(), i, 2);
                     }
-                    this.pantallaFileS.setModel(tofils);
-          
-
-                    
-                    Thread.sleep(10000);             
+                    this.pantallaFileS.setModel(tofils);   
+                    Thread.sleep(300000);             
                 }
             } catch (RemoteException | InterruptedException ex) {
                 Logger.getLogger(ActualizarPantalla.class.getName()).log(Level.SEVERE, null, ex);
