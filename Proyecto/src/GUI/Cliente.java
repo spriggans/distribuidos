@@ -385,6 +385,11 @@ public class Cliente extends javax.swing.JFrame{
                     u=user.get(i);   
             ActualizarPantalla ac= new ActualizarPantalla(ipServ);
             ac.refrescar(u.getUsuario(), u.getPassword(), u.getIpNodo());
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
             this.hiloActualizar = new Thread (new ActualizarPantalla(this.tproc,this.directorio,this.filesystem,this.cpu,this.ram,ipNodo,ipServ,this.listaProcesos,this.listaDirectorios));
             hiloActualizar.start();
         }
