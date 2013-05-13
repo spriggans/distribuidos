@@ -377,7 +377,7 @@ public class Cliente extends javax.swing.JFrame{
             ActualizarPantalla ac= new ActualizarPantalla(ipServ);
             ac.refrescar(u.getUsuario(), u.getPassword(), u.getIpNodo());
             try {
-                Thread.sleep(2000);
+                Thread.sleep(1500);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -397,7 +397,7 @@ public class Cliente extends javax.swing.JFrame{
             ActualizarPantalla ac= new ActualizarPantalla(ipServ);
             ac.refrescar(u.getUsuario(), u.getPassword(), u.getIpNodo());
             try {
-                Thread.sleep(2000);
+                Thread.sleep(1500);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
             }
