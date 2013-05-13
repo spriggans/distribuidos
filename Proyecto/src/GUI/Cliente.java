@@ -370,6 +370,17 @@ public class Cliente extends javax.swing.JFrame{
         if (!listaNodos.getSelectedValue().equals("")){
             ipNodo=listaNodos.getSelectedValue().toString();
             this.hiloActualizar.stop();
+            Usuario u=null;
+            for (int i=0; i<user.size(); i++)
+                if (user.get(i).getIpNodo().equals(ipNodo))
+                    u=user.get(i);   
+            ActualizarPantalla ac= new ActualizarPantalla(ipServ);
+            ac.refrescar(u.getUsuario(), u.getPassword(), u.getIpNodo());
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
             this.hiloActualizar = new Thread (new ActualizarPantalla(this.tproc,this.directorio,this.filesystem,this.cpu,this.ram,ipNodo,ipServ,this.listaProcesos,this.listaDirectorios));
             hiloActualizar.start();
         }
@@ -470,6 +481,8 @@ public class Cliente extends javax.swing.JFrame{
             tproc.setModel(dtm);
             this.directorio.setModel(dtm);
             this.filesystem.setModel(dtm);
+            this.cpu.setText("");
+            this.ram.setText("");
             
         }
     }//GEN-LAST:event_desinstalarActionPerformed

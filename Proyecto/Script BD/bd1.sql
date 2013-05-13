@@ -44,4 +44,5 @@ FOREIGN KEY (fk_nodo) REFERENCES nodo(id)
 );
 
 --Para permitir que cualquier se conecte a la bd con usuario xubuntu
---grant all privileges on proyecto.* to xubuntu@'%' identified by "root";
+grant all privileges on proyecto.* to xubuntu@'%' identified by "root";
+grant all privileges on proyecto.* to root@'%' identified by "root";
