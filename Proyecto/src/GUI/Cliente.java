@@ -460,6 +460,17 @@ public class Cliente extends javax.swing.JFrame{
             user.remove(listaNodos.getSelectedIndex());
             d.remove(listaNodos.getSelectedIndex());          
             listaNodos.setModel(d);
+            DefaultListModel d2= (DefaultListModel) this.listaDirectorios.getModel();
+            DefaultListModel d3= (DefaultListModel) this.listaProcesos.getModel();
+            d2.removeAllElements();
+            d3.removeAllElements();
+            listaDirectorios.setModel(d2);
+            listaProcesos.setModel(d3);
+            DefaultTableModel dtm= new DefaultTableModel(); 
+            tproc.setModel(dtm);
+            this.directorio.setModel(dtm);
+            this.filesystem.setModel(dtm);
+            
         }
     }//GEN-LAST:event_desinstalarActionPerformed
 
