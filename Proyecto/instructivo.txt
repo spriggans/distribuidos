@@ -5,7 +5,7 @@ Preparacion: Instalacion del servidor.
 3) Montar la BD con el nombre "proyecto"
 4) Cambiar en la clase implementarRmi las rutas de los scripts de instalar y desinstalar en las clases ejecutarInstalacion y desinstalar respectivamente.
 5) Si los scripts no tienen los permisos de ejecucion, ponerselos.
-6) En /etc/mysql/my.cnf comentar la linea bind-address para permitir la conexion remota a la bd.
+6) En /etc/mysql/my.cnf comentar la linea bind-address para permitir la conexion remota a la bd y reiniciar el servicio de mysql /etc/init.d/mysql [stop,start].
 7) En ActualizarPantalla en los metodos instalar y desinstalar cambiar el usuario y clave por el del servidor.
 8) Ejecutar la clase servidor.
 
