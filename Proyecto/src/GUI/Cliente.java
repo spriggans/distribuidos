@@ -103,7 +103,7 @@ public class Cliente extends javax.swing.JFrame{
         jScrollPane9 = new javax.swing.JScrollPane();
         listaNodos = new javax.swing.JList();
         selecNodo = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        refrescar = new javax.swing.JButton();
         botonV = new javax.swing.JButton();
         desinstalar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -261,13 +261,13 @@ public class Cliente extends javax.swing.JFrame{
         });
         getContentPane().add(selecNodo, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 70, 140, -1));
 
-        jButton1.setText("Refrescar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        refrescar.setText("Refrescar");
+        refrescar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                refrescarActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 120, 90, -1));
+        getContentPane().add(refrescar, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 120, 90, -1));
 
         botonV.setText("Terminar Proceso");
         botonV.addActionListener(new java.awt.event.ActionListener() {
@@ -370,23 +370,12 @@ public class Cliente extends javax.swing.JFrame{
         if (!listaNodos.getSelectedValue().equals("")){
             ipNodo=listaNodos.getSelectedValue().toString();
             this.hiloActualizar.stop();
-            Usuario u=null;
-            for (int i=0; i<user.size(); i++)
-                if (user.get(i).getIpNodo().equals(ipNodo))
-                    u=user.get(i);   
-            ActualizarPantalla ac= new ActualizarPantalla(ipServ);
-            ac.refrescar(u.getUsuario(), u.getPassword(), u.getIpNodo());
-            try {
-                Thread.sleep(1500);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
-            }
             this.hiloActualizar = new Thread (new ActualizarPantalla(this.tproc,this.directorio,this.filesystem,this.cpu,this.ram,ipNodo,ipServ,this.listaProcesos,this.listaDirectorios));
             hiloActualizar.start();
         }
     }//GEN-LAST:event_selecNodoActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void refrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refrescarActionPerformed
         // TODO add your handling code here:
         if (ipNodo!=null){
             this.hiloActualizar.stop();
@@ -404,7 +393,7 @@ public class Cliente extends javax.swing.JFrame{
             this.hiloActualizar = new Thread (new ActualizarPantalla(this.tproc,this.directorio,this.filesystem,this.cpu,this.ram,ipNodo,ipServ,this.listaProcesos,this.listaDirectorios));
             hiloActualizar.start();
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_refrescarActionPerformed
 
     private void botonVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVActionPerformed
         // TODO add your handling code here:
@@ -530,7 +519,6 @@ public class Cliente extends javax.swing.JFrame{
     private javax.swing.JTable directorio;
     private javax.swing.JButton enviar;
     private javax.swing.JTable filesystem;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -559,6 +547,7 @@ public class Cliente extends javax.swing.JFrame{
     private javax.swing.JTextArea mensaje;
     private javax.swing.JTextArea pantalla;
     private javax.swing.JTextField ram;
+    private javax.swing.JButton refrescar;
     private javax.swing.JButton selecNodo;
     private javax.swing.JTable tproc;
     // End of variables declaration//GEN-END:variables
