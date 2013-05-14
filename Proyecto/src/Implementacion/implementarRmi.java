@@ -40,63 +40,87 @@ public class implementarRmi extends UnicastRemoteObject implements metodosRMI, S
     public implementarRmi() throws RemoteException {
     }
 
-    @Override
+@Override
     public List<Proceso> obtenerTopProcesos(String ip) throws RemoteException {
         iniciarSesion();
         Transaction tx = session.beginTransaction();
         //Session sesion=this.getSesion();       
-        Nodo nodo = (Nodo) session.createQuery("from Nodo where ip='" + ip + "' order by id desc").setMaxResults(1).list().get(0);
-        Query procesos = session.createQuery("from Proceso where fk_nodo='" + nodo.getId() + "' ORDER by porcentaje DESC").setMaxResults(10);
-        List<Proceso> list = (List<Proceso>) procesos.list();
-        tx.commit();
-        session.close();
-        return list;
+        List qnodo = session.createQuery("from Nodo where ip='" + ip + "' order by id desc").setMaxResults(1).list();
+        if (qnodo.size() > 0) {
+            Nodo nodo = (Nodo) qnodo.get(0);
+            Query procesos = session.createQuery("from Proceso where fk_nodo='" + nodo.getId() + "' ORDER by porcentaje DESC").setMaxResults(10);
+            List<Proceso> list = (List<Proceso>) procesos.list();
+            tx.commit();
+            session.close();
+            return list;
+        } else {
+            return null;
+        }
     }
 
     @Override
     public List<Directorio> obtenerTopDirectorios(String ip) throws RemoteException {
         iniciarSesion();
         Transaction tx = session.beginTransaction();
-        //Session sesion=this.getSesion();       
-        Nodo nodo = (Nodo) session.createQuery("from Nodo where ip='" + ip + "' order by id desc").setMaxResults(1).list().get(0);
-        Query directorios = session.createQuery("from Directorio where fk_nodo='" + nodo.getId() + "' ORDER by id desc").setMaxResults(10);
-        List<Directorio> list = (List<Directorio>) directorios.list();
-        tx.commit();
-        session.close();
-        return list;
+        //Session sesion=this.getSesion();   
+        List qnodo = session.createQuery("from Nodo where ip='" + ip + "' order by id desc").setMaxResults(1).list();
+        if (qnodo.size() > 0) {
+            Nodo nodo = (Nodo) qnodo.get(0);
+            Query directorios = session.createQuery("from Directorio where fk_nodo='" + nodo.getId() + "' ORDER by id desc").setMaxResults(10);
+            List<Directorio> list = (List<Directorio>) directorios.list();
+            tx.commit();
+            session.close();
+            return list;
+        } else {
+            return null;
+        }
     }
 
     @Override
     public float usoCpu(String ip) throws RemoteException {
         iniciarSesion();
         Transaction tx = session.beginTransaction();
-       Nodo nodo = (Nodo) session.createQuery("from Nodo where ip='" + ip + "' order by id desc").setMaxResults(1).list().get(0);
-        Cpu cpu = (Cpu) session.createQuery("from Cpu where fk_nodo =" + nodo.getId() + " order by id desc").setMaxResults(1).list().get(0);
-        tx.commit();
-        session.close();
-        return cpu.getCpu();
+        List qnodo = session.createQuery("from Nodo where ip='" + ip + "' order by id desc").setMaxResults(1).list();
+        if (qnodo.size() > 0) {
+            Nodo nodo = (Nodo) qnodo.get(0);
+            Cpu cpu = (Cpu) session.createQuery("from Cpu where fk_nodo =" + nodo.getId() + " order by id desc").setMaxResults(1).list().get(0);
+            tx.commit();
+            session.close();
+            return cpu.getCpu();
+        } else {
+            return 0;
+        }
     }
 
     @Override
     public float usoRam(String ip) throws RemoteException {
         iniciarSesion();
         Transaction tx = session.beginTransaction();
-        Nodo nodo = (Nodo) session.createQuery("from Nodo where ip='" + ip + "' order by id desc").setMaxResults(1).list().get(0);
-        Ram ram = (Ram) session.createQuery("from Ram where fk_nodo =" + nodo.getId() + " order by id desc").setMaxResults(1).list().get(0);
-        tx.commit();
-        session.close();
-        return ram.getRam();
+        List qnodo = session.createQuery("from Nodo where ip='" + ip + "' order by id desc").setMaxResults(1).list();
+        if (qnodo.size() > 0) {
+            Nodo nodo = (Nodo) qnodo.get(0);
+            Ram ram = (Ram) session.createQuery("from Ram where fk_nodo =" + nodo.getId() + " order by id desc").setMaxResults(1).list().get(0);
+            tx.commit();
+            session.close();
+            return ram.getRam();
+        } else {
+            return 0;
+        }
     }
 
     @Override
     public List<Filesystem> usoFilesystem(String ip) throws RemoteException {
         iniciarSesion();
         Transaction tx = session.beginTransaction();
-        Nodo nodo = (Nodo) session.createQuery("from Nodo where ip='" + ip + "' order by id desc").setMaxResults(1).list().get(0);
-        List<Filesystem> fs = (List<Filesystem>) session.createQuery("from Filesystem where fk_nodo =" + nodo.getId() + " order by id desc").setMaxResults(10).list();
-        tx.commit();
-        session.close();
-        return fs;
+        List qnodo = session.createQuery("from Nodo where ip='" + ip + "' order by id desc").setMaxResults(1).list();
+        if (qnodo.size() > 0) {
+            Nodo nodo = (Nodo) qnodo.get(0);
+            List<Filesystem> fs = (List<Filesystem>) session.createQuery("from Filesystem where fk_nodo =" + nodo.getId() + " order by id desc").setMaxResults(10).list();
+            tx.commit();
+            session.close();
+            return fs;
+        }
+        return null;
     }
 
     @Override
@@ -150,11 +174,12 @@ public class implementarRmi extends UnicastRemoteObject implements metodosRMI, S
         // Es necesario capturar JSchException
         try {
             JSch.setConfig("StrictHostKeyChecking", "no");
+            System.out.println (usuario+" "+pass);
             com.jcraft.jsch.Session sesion = jsch.getSession(usuario, ipserv);
             sesion.setPassword(pass);
             sesion.connect();
                 ChannelExec channelExec = (ChannelExec) sesion.openChannel("exec");
-                channelExec.setCommand("/home/angel/Escritorio/Proyecto/distribuidos/Proyecto/./instalacion.sh "+usuNodo+" "+passNodo+" "+ipnodo);
+                channelExec.setCommand("/home/xubuntu/NetBeansProjects/distribuidos/Proyecto/./instalacion.sh "+usuNodo+" "+passNodo+" "+ipnodo);
                 channelExec.connect();
                 channelExec.disconnect();
             sesion.disconnect();
@@ -174,7 +199,7 @@ public class implementarRmi extends UnicastRemoteObject implements metodosRMI, S
             sesion.setPassword(pass);
             sesion.connect();
                 ChannelExec channelExec = (ChannelExec) sesion.openChannel("exec");
-                channelExec.setCommand("/home/angel/Escritorio/Proyecto/distribuidos/Proyecto/./desinstalar.sh "+usuNodo+" "+passNodo+" "+ipnodo);
+                channelExec.setCommand("/home/xubuntu/NetBeansProjects/distribuidos/Proyecto/./desinstalar.sh "+usuNodo+" "+passNodo+" "+ipnodo);
                 channelExec.connect();
                 channelExec.disconnect();
             sesion.disconnect();

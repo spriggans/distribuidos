@@ -120,6 +120,11 @@ public class Cliente extends javax.swing.JFrame{
 
         mensaje.setColumns(20);
         mensaje.setRows(5);
+        mensaje.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                mensajeKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(mensaje);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 390, 290, -1));
@@ -475,6 +480,24 @@ public class Cliente extends javax.swing.JFrame{
             
         }
     }//GEN-LAST:event_desinstalarActionPerformed
+
+    private void mensajeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_mensajeKeyReleased
+        // TODO add your handling code here:
+        if(evt.getKeyCode()==10)
+        if (mensaje.getText().length()>0){
+            try {            
+                out= new ObjectOutputStream(os);           
+                Chat chat2;
+                chat2= new Chat (mensaje.getText(),cliente.getLocalPort());
+                out.writeObject(chat2);
+                mensaje.setText("");  
+            } catch (UnknownHostException ex) {
+                System.err.println ("No se encuentra el host");
+            } catch (IOException ex) {
+                System.err.println ("Error de i/o");
+            } 
+        }      
+    }//GEN-LAST:event_mensajeKeyReleased
 
     /**
      * @param args the command line arguments

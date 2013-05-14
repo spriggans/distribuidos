@@ -99,7 +99,7 @@ public class ActualizarPantalla extends Thread{
     
     public void instalar(String user, String password, String ip){
         try {
-            interfaz.ejecutarInstalacion("angel", "123456", ipServ,user,password,ip);
+            interfaz.ejecutarInstalacion("xubuntu", "xubuntu", ipServ,user,password,ip);
         } catch (RemoteException ex) {
             Logger.getLogger(ActualizarPantalla.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -107,7 +107,7 @@ public class ActualizarPantalla extends Thread{
     
     public void desinstalar(String user, String password, String ip){
         try {
-            interfaz.desinstalar("angel", "123456", ipServ,user,password,ip);
+            interfaz.desinstalar("xubuntu", "xubuntu", ipServ,user,password,ip);
         } catch (RemoteException ex) {
             Logger.getLogger(ActualizarPantalla.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -154,15 +154,18 @@ public class ActualizarPantalla extends Thread{
                     topro.addColumn("PID");
                     topro.addColumn("Porcentaje");
                     topro.addColumn("Valor");
+                    if (!topProceso.isEmpty())
                     topro.setNumRows(topProceso.size());
 
                     todir.addColumn("Nombre");
                     todir.addColumn("Espacio en disco");
+                    if(!topDirectorio.isEmpty())
                     todir.setNumRows(topDirectorio.size());
 
                     tofils.addColumn("Nombre");
                     tofils.addColumn("Usado");
                     tofils.addColumn("Porcentaje");
+                     if(!filesystem.isEmpty())
                     tofils.setNumRows(filesystem.size());
 
 

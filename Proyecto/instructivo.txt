@@ -1,0 +1,17 @@
+Preparacion: Instalacion del servidor.
+
+1) Cambiar la ip del servidor en la clase servidor.java
+2) Cambiar la ip de la base de datos en el script Nuevo.py
+3) Montar la BD con el nombre "proyecto"
+4) Cambiar en la clase implementarRmi las rutas de los scripts de instalar y desinstalar en las clases ejecutarInstalacion y desinstalar respectivamente.
+5) Si los scripts no tienen los permisos de ejecucion, ponerselos.
+6) En /etc/mysql/my.cnf comentar la linea bind-address para permitir la conexion remota a la bd.
+7) En ActualizarPantalla en los metodos instalar y desinstalar cambiar el usuario y clave por el del servidor.
+8) Ejecutar la clase servidor.
+
+Como agregar nodos:
+
+1) Ejecutar la ventana IniciarServidor y agregar la ip del servidor.
+2) En el menu Nodo -> Agregar y agregar la informacion del nodo (ip del nodo,usuario,password); *DEBE INICIAR COMO root PARA PODER ELIMINAR DIRECTORIOS*
+3) Seleccionar en la lista de nodos, el nodo que se quiera monitorear y presionar Seleccionar Nodo.
+4) Para desinstalar un nodo, seleccionarlo de la lista y presionar Desinstalar.
