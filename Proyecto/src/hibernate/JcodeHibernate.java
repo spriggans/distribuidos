@@ -44,21 +44,35 @@ public class JcodeHibernate {
 //                session.save(c);
 //                Query query = session.createQuery("from Nodo");
 //                Iterator it = query.iterate();
-                Nodo x= (Nodo) session.createQuery("from Nodo where ip='192.168.1.1'").uniqueResult();
-                Nodo y =(Nodo) session.load(Nodo.class,new Long(1));
-                System.out.println(y.getIp());
-          //      List <Nodo> nodo=(List<Nodo>)idnodo.list();
-                System.out.println("id nodo" + x.getId());
-                Query procesos = session.createQuery("from Cpu where fk_nodo=1 ORDER by id desc, cpu desc").setMaxResults(10);
-        List<Cpu> list = (List<Cpu>) procesos.list();
-                System.out.println(list.get(0).getCpu().toString());
-                 System.out.println(list.get(1).getCpu().toString());
-                  System.out.println(list.get(2).getCpu().toString());
-               
-                
-           
-        Cpu cpu= (Cpu) session.createQuery("from Cpu where fk_nodo ="+x.getId()+" order by id desc").setMaxResults(1).list().get(0);
-        System.out.println(cpu.getCpu());
+//                Nodo x= (Nodo) session.createQuery("from Nodo where ip='192.168.1.153'").uniqueResult();
+//                Nodo y =(Nodo) session.load(Nodo.class,new Long(1));
+//                System.out.println(y.getIp());
+//          //      List <Nodo> nodo=(List<Nodo>)idnodo.list();
+//                System.out.println("id nodo" + x.getId());
+//                Query procesos = session.createQuery("from Cpu where fk_nodo=1 ORDER by id desc, cpu desc").setMaxResults(10);
+//        List<Cpu> list = (List<Cpu>) procesos.list();
+//                System.out.println(list.get(0).getCpu().toString());
+//                 System.out.println(list.get(1).getCpu().toString());
+//                  System.out.println(list.get(2).getCpu().toString());
+//               
+//                
+//           
+//        Cpu cpu= (Cpu) session.createQuery("from Cpu where fk_nodo ="+x.getId()+" order by id desc").setMaxResults(1).list().get(0);
+//        System.out.println(cpu.getCpu());
+        
+        
+        
+         List qnodo = session.createQuery("from Nodo where ip='192.168.1.1' order by id desc").setMaxResults(1).list();
+        if (qnodo.isEmpty()) {
+            
+             System.out.println("no encontro");
+          }
+        else
+        {
+         Nodo nodo = (Nodo) qnodo.get(0);
+            System.out.println("este es el nodo"+nodo.getIp());
+        
+        }
                 tx.commit();
 //                System.out.println("Insert Finalizado...");
 //                Long id;
