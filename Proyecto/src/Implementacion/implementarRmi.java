@@ -11,7 +11,7 @@ import BD.Filesystem;
 import BD.Nodo;
 import BD.Proceso;
 import BD.Ram;
-import chat.metodosRMI;
+import server.metodosRMI;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;

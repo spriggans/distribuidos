@@ -6,8 +6,8 @@ package GUI;
 
 import Logica.ActualizarPantalla;
 import Logica.Usuario;
-import chat.Chat;
-import chat.escucharCliente;
+import server.Chat;
+import server.escucharCliente;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;

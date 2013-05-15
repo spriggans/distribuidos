@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package chat;
+package server;
 
 import Implementacion.implementarRmi;
 import java.io.IOException;
