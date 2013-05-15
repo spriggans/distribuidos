@@ -151,21 +151,23 @@ public class ActualizarPantalla extends Thread{
                     DefaultListModel toprolis = new DefaultListModel();
                     DefaultListModel todirlis = new DefaultListModel();
 
+                    System.out.println (topProceso);
+                    
                     topro.addColumn("PID");
                     topro.addColumn("Porcentaje");
                     topro.addColumn("Valor");
-                    if (!topProceso.isEmpty())
+                    if (topProceso!=null)
                     topro.setNumRows(topProceso.size());
 
                     todir.addColumn("Nombre");
                     todir.addColumn("Espacio en disco");
-                    if(!topDirectorio.isEmpty())
+                    if(topDirectorio!=null)
                     todir.setNumRows(topDirectorio.size());
 
                     tofils.addColumn("Nombre");
                     tofils.addColumn("Usado");
                     tofils.addColumn("Porcentaje");
-                     if(!filesystem.isEmpty())
+                     if(filesystem!=null)
                     tofils.setNumRows(filesystem.size());
 
 
