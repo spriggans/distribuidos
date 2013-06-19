@@ -23,17 +23,24 @@ public class escucharCliente extends Thread{
     private Chat chat;
     private JTextArea pantalla;
     private Socket cliente;
+    public static int sala=0;
 
 
-    public escucharCliente(JTextArea pantalla, Socket cliente) {
+    public escucharCliente(JTextArea pantalla, Socket cliente,int sala) {
         try {
             this.pantalla=pantalla;
             is=cliente.getInputStream();
             this.cliente=cliente;
+            this.sala=sala;
         } catch (IOException ex) {
             Logger.getLogger(escucharCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+    }
+    
+    
+    public void cambiar (int sala){
+        this.sala=sala;
     }
 
     
@@ -43,7 +50,8 @@ public class escucharCliente extends Thread{
             try {
                 if (is!=null){
                 in = new ObjectInputStream(is);
-                chat= (Chat) in.readObject();   
+                chat= (Chat) in.readObject();  
+                if (chat.sala==sala)
                 pantalla.append(cliente.getLocalAddress().getHostAddress()+":"+chat.puerto+" "+chat.horaEnvio+" > "+chat.mensaje+"\n"); 
                 }
             } catch (IOException ex) {

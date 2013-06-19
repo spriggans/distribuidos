@@ -36,6 +36,8 @@ public class Cliente extends javax.swing.JFrame{
     private ArrayList <Usuario> user=new ArrayList <Usuario> ();
     private Thread hiloActualizar;
     private DefaultListModel listamodelo = new DefaultListModel();
+    private static int sala=0;
+    private  Thread hilo;
 
     /**
      * Creates new form Cliente
@@ -50,7 +52,7 @@ public class Cliente extends javax.swing.JFrame{
              this.jRadioButton1.setSelected(true);
              ipServ= cliente.getRemoteSocketAddress().toString();
              this.setLocationRelativeTo(null);
-             Thread hilo = new Thread(new escucharCliente(pantalla,cliente));    
+             hilo = new Thread(new escucharCliente(pantalla,cliente,sala));    
              hilo.start();        
              this.hiloActualizar = new Thread (new ActualizarPantalla(this.tproc,this.directorio,this.filesystem,this.cpu,this.ram,ipNodo,ipServ,this.listaProcesos,this.listaDirectorios));
              hiloActualizar.start();     
@@ -106,6 +108,11 @@ public class Cliente extends javax.swing.JFrame{
         refrescar = new javax.swing.JButton();
         botonV = new javax.swing.JButton();
         desinstalar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        nameSala = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         agregarNodo = new javax.swing.JMenuItem();
@@ -127,7 +134,7 @@ public class Cliente extends javax.swing.JFrame{
         });
         jScrollPane1.setViewportView(mensaje);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 390, 290, -1));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 390, 280, -1));
 
         enviar.setText("Enviar");
         enviar.addActionListener(new java.awt.event.ActionListener() {
@@ -135,14 +142,14 @@ public class Cliente extends javax.swing.JFrame{
                 enviarActionPerformed(evt);
             }
         });
-        getContentPane().add(enviar, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 390, 90, 90));
+        getContentPane().add(enviar, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 390, 90, 90));
 
         pantalla.setColumns(20);
         pantalla.setRows(5);
         pantalla.setEnabled(false);
         jScrollPane2.setViewportView(pantalla);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 250, 390, 130));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 250, 280, 130));
 
         cpu.setEditable(false);
         getContentPane().add(cpu, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 60, 100, -1));
@@ -290,6 +297,36 @@ public class Cliente extends javax.swing.JFrame{
         });
         getContentPane().add(desinstalar, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 110, 140, -1));
 
+        jButton1.setText("Admins de SO");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 250, 110, -1));
+
+        jButton2.setText("Admins de BD");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 280, 110, -1));
+
+        jButton3.setText("Monitoreo");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 310, 110, -1));
+
+        jLabel6.setText("Te encuentras en la sala: ");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 230, 130, -1));
+
+        nameSala.setText("General");
+        getContentPane().add(nameSala, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 230, -1, -1));
+
         jMenu1.setText("Nodo");
 
         agregarNodo.setText("Agregar");
@@ -313,7 +350,8 @@ public class Cliente extends javax.swing.JFrame{
             try {            
                 out= new ObjectOutputStream(os);           
                 Chat chat2;
-                chat2= new Chat (mensaje.getText(),cliente.getLocalPort());
+               chat2= new Chat (mensaje.getText(),cliente.getLocalPort());
+                chat2.setSala(escucharCliente.sala);
                 out.writeObject(chat2);
                 mensaje.setText("");  
             } catch (UnknownHostException ex) {
@@ -499,6 +537,27 @@ public class Cliente extends javax.swing.JFrame{
         }      
     }//GEN-LAST:event_mensajeKeyReleased
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        escucharCliente.sala=1;
+        this.nameSala.setText("Administradores de SO");
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+         escucharCliente.sala=2;
+         this.nameSala.setText("Administradores de BD");
+ 
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+         escucharCliente.sala=3;
+         this.nameSala.setText("Personal de Monitoreo");
+       
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -542,11 +601,15 @@ public class Cliente extends javax.swing.JFrame{
     private javax.swing.JTable directorio;
     private javax.swing.JButton enviar;
     private javax.swing.JTable filesystem;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JRadioButton jRadioButton1;
@@ -568,6 +631,7 @@ public class Cliente extends javax.swing.JFrame{
     private javax.swing.JList listaNodos;
     private javax.swing.JList listaProcesos;
     private javax.swing.JTextArea mensaje;
+    private javax.swing.JLabel nameSala;
     private javax.swing.JTextArea pantalla;
     private javax.swing.JTextField ram;
     private javax.swing.JButton refrescar;
