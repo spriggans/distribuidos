@@ -8,7 +8,7 @@ import BD.Directorio;
 import BD.Filesystem;
 import BD.Proceso;
 import GUI.Cliente;
-import server.metodosRMI;
+import chat.metodosRMI;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.util.List;
