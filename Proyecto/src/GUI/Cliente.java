@@ -322,7 +322,7 @@ public class Cliente extends javax.swing.JFrame{
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 310, 110, -1));
 
         jLabel6.setText("Te encuentras en la sala: ");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 230, 130, -1));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 230, 150, -1));
 
         nameSala.setText("General");
         getContentPane().add(nameSala, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 230, -1, -1));

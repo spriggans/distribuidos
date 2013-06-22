@@ -51,9 +51,11 @@ public class escucharCliente extends Thread{
                 if (is!=null){
                 in = new ObjectInputStream(is);
                 chat= (Chat) in.readObject();  
-                if (chat.sala==sala)
-                pantalla.append(cliente.getLocalAddress().getHostAddress()+":"+chat.puerto+" "+chat.horaEnvio+" > "+chat.mensaje+"\n"); 
+                if (chat.mensaje.substring(0,1).equals("@") || chat.sala==sala){
+                    if (chat.mensaje.substring(0,1).equals("@")) chat.mensaje=chat.mensaje.substring(1);
+                    pantalla.append(cliente.getLocalAddress().getHostAddress()+":"+chat.puerto+" "+chat.horaEnvio+" > "+chat.mensaje+"\n"); 
                 }
+            }
             } catch (IOException ex) {
                 System.out.println ("Se ha cerrado la conexion");
                 break;
