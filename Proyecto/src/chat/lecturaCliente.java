@@ -41,8 +41,12 @@ public class lecturaCliente extends Thread{
                 while (true){             
                     in = new ObjectInputStream(cliente.getInputStream());
                     chat= (Chat) in.readObject();
+                    System.out.println (chat.mensaje);
+                    if (chat.mensaje.equals("solicitarLista")) enviarTodosLista();
+                    else {
                     chat.horaEnvio=new Date().toLocaleString();
                     enviarTodos();
+                    }
                 }
             } catch (IOException ex) {
                 System.out.println ("cerro la conexion un cliente");
@@ -65,6 +69,18 @@ public class lecturaCliente extends Thread{
                 }
             }
      }
-    
+       
+        private void enviarTodosLista() {
+            for (int i=0; i<listaCliente.size(); i++){
+                try {
+                    out= new ObjectOutputStream (listaCliente.get(i).getOutputStream());
+                        out.writeObject (listaCliente);
+                        out.flush(); 
+                } catch (IOException ex) {
+                    Logger.getLogger(lecturaCliente.class.getName()).log(Level.SEVERE, null, ex);
+                    listaCliente.remove(i);
+                } 
+            }
+     }
     
 }

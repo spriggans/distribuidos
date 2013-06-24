@@ -4,6 +4,8 @@
  */
 package GUI;
 
+import chat.servidor;
+
 /**
  *
  * @author angel
@@ -78,8 +80,10 @@ public class IniciarServidor extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void conectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_conectarActionPerformed
-        // TODO add your handling code here:
-       Cliente cliente = new Cliente (this.ipServidor.getText());
+        // TODO add your handling code here: 
+       Thread s= new Thread (new servidor (this.ipServidor.getText()));
+       s.start();
+       Cliente cliente = new Cliente (this.ipServidor.getText(),servidor.servi);
        cliente.setVisible(true);
        this.dispose();
     }//GEN-LAST:event_conectarActionPerformed

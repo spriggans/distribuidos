@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextArea;
@@ -24,6 +25,7 @@ public class escucharCliente extends Thread{
     private JTextArea pantalla;
     private Socket cliente;
     public static int sala=0;
+    private ArrayList <Socket> listaCliente= new ArrayList <Socket>();
 
 
     public escucharCliente(JTextArea pantalla, Socket cliente,int sala) {
@@ -37,6 +39,10 @@ public class escucharCliente extends Thread{
         }
         
     }
+    
+    public escucharCliente (ArrayList <Socket> listaClientes){
+        this.listaCliente= listaClientes;
+    };
     
     
     public void cambiar (int sala){
@@ -53,7 +59,7 @@ public class escucharCliente extends Thread{
                 chat= (Chat) in.readObject();  
                 if (chat.mensaje.substring(0,1).equals("@") || chat.sala==sala){
                     if (chat.mensaje.substring(0,1).equals("@")) chat.mensaje=chat.mensaje.substring(1);
-                    pantalla.append(cliente.getLocalAddress().getHostAddress()+":"+chat.puerto+" "+chat.horaEnvio+" > "+chat.mensaje+"\n"); 
+                    pantalla.append(cliente.getInetAddress()+":"+chat.puerto+" "+chat.horaEnvio+" > "+chat.mensaje+"\n"); 
                 }
             }
             } catch (IOException ex) {
@@ -64,5 +70,5 @@ public class escucharCliente extends Thread{
             } 
         }  
    }
-    
+
 }

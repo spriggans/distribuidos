@@ -8,6 +8,7 @@ import Logica.ActualizarPantalla;
 import Logica.Usuario;
 import chat.Chat;
 import chat.escucharCliente;
+import static chat.escucharCliente.sala;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -38,24 +39,30 @@ public class Cliente extends javax.swing.JFrame{
     private DefaultListModel listamodelo = new DefaultListModel();
     private static int sala=0;
     private  Thread hilo;
+    private ArrayList <Socket> listaClientes = new ArrayList <Socket>();
 
     /**
      * Creates new form Cliente
      */
-    public Cliente(String ip) {
+    public Cliente(String ip, boolean servi) {
         try {
              initComponents();
              cliente= new Socket (ip,8888);
+             System.out.println (cliente.getInetAddress());
              is = cliente.getInputStream();
-             os = cliente.getOutputStream();      
-         //    ipNodo= cliente.getInetAddress().getHostAddress().toString();
+             os = cliente.getOutputStream();          
              this.jRadioButton1.setSelected(true);
              ipServ= cliente.getRemoteSocketAddress().toString();
              this.setLocationRelativeTo(null);
              hilo = new Thread(new escucharCliente(pantalla,cliente,sala));    
-             hilo.start();        
+             hilo.start();     
+//             solicitarLista();
+             
+             
              this.hiloActualizar = new Thread (new ActualizarPantalla(this.tproc,this.directorio,this.filesystem,this.cpu,this.ram,ipNodo,ipServ,this.listaProcesos,this.listaDirectorios));
              hiloActualizar.start();     
+             if (servi) this.jLabel7.setText("Este cliente es actualmente servidor");
+             else this.jLabel7.setText ("Solo cliente");
         } catch (UnknownHostException ex) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -113,6 +120,7 @@ public class Cliente extends javax.swing.JFrame{
         jButton3 = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         nameSala = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         agregarNodo = new javax.swing.JMenuItem();
@@ -327,6 +335,9 @@ public class Cliente extends javax.swing.JFrame{
         nameSala.setText("General");
         getContentPane().add(nameSala, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 230, -1, -1));
 
+        jLabel7.setText("label");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 10, 320, 20));
+
         jMenu1.setText("Nodo");
 
         agregarNodo.setText("Agregar");
@@ -344,6 +355,21 @@ public class Cliente extends javax.swing.JFrame{
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void solicitarLista(){
+        try {            
+                out= new ObjectOutputStream(os);           
+                Chat chat2;
+               chat2= new Chat ("solicitarLista",cliente.getLocalPort());
+                chat2.setSala(escucharCliente.sala);
+                out.writeObject(chat2);
+            } catch (UnknownHostException ex) {
+                System.err.println ("No se encuentra el host");
+            } catch (IOException ex) {
+                System.err.println ("Error de i/o");
+            } 
+    }
+    
+    
     private void enviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enviarActionPerformed
         // TODO add your handling code here:
         if (mensaje.getText().length()>0){
@@ -588,7 +614,7 @@ public class Cliente extends javax.swing.JFrame{
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Cliente(null).setVisible(true);  
+                new Cliente(null,false).setVisible(true);  
             }
         });
     }
@@ -610,6 +636,7 @@ public class Cliente extends javax.swing.JFrame{
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JRadioButton jRadioButton1;

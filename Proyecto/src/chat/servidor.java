@@ -5,7 +5,9 @@
 package chat;
 
 import Implementacion.implementarRmi;
+import static chat.lecturaCliente.listaCliente;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.rmi.registry.LocateRegistry;
@@ -19,21 +21,38 @@ import java.rmi.server.*;
  *
  * @author angel
  */
-public class servidor {
+public class servidor extends Thread{
     
     private Socket cliente = null;
     private ServerSocket ss= null;    
     public static ArrayList <Socket> listaClientes= new ArrayList <Socket>();
+    public static boolean servi;
+    private ObjectOutputStream out;
 
     
-    public servidor() {
+    public servidor(String ip) {
 
         try {
-            ss = new ServerSocket(8888);     
-        } catch (IOException ex) {
-            System.err.println("No se puede escuchar en el puerto 8888");
+            System.setProperty("java.rmi.server.hostname", ip);
+            implementarRmi rmi= new implementarRmi();
+            Registry reg = LocateRegistry.createRegistry(1099);
+            reg.rebind ("servidor", rmi);
         }
-
+        catch (Exception e){}  
+        
+        try {
+            ss = new ServerSocket(8888);     
+            servi=true;
+        } catch (IOException ex) {
+            servi=false;
+            System.err.println("No se puede escuchar en el puerto 8888");
+            this.stop();
+        }
+        
+    }
+    
+    @Override
+    public void run (){
         while (true) {
             try {
                 cliente = ss.accept();
@@ -42,21 +61,20 @@ public class servidor {
                 hiloLectura.start();
             } catch (IOException ex) {
                 Logger.getLogger(servidor.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (NullPointerException ex){
+                this.stop();
             }
         }
     }
 
     public static void main(String[] args) {
         // TODO code application logic here
-        try {
+    //    try {
             
-            System.setProperty("java.rmi.server.hostname", "127.0.0.1");
-            implementarRmi rmi= new implementarRmi();
-            Registry reg = LocateRegistry.createRegistry(1099);
-            reg.rebind ("servidor", rmi);
+          /*
             servidor ser = new servidor();
-           
-        } catch (Exception e){}  
+    /       */
+    //    } catch (Exception e){}  
     }
     
     
