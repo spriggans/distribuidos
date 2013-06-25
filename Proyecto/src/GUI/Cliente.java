@@ -56,9 +56,7 @@ public class Cliente extends javax.swing.JFrame{
              this.setLocationRelativeTo(null);
              hilo = new Thread(new escucharCliente(pantalla,cliente,sala));    
              hilo.start();     
-//             solicitarLista();
-             
-             
+//             solicitarLista();             
              this.hiloActualizar = new Thread (new ActualizarPantalla(this.tproc,this.directorio,this.filesystem,this.cpu,this.ram,ipNodo,ipServ,this.listaProcesos,this.listaDirectorios));
              hiloActualizar.start();     
              if (servi) this.jLabel7.setText("Este cliente es actualmente servidor");
@@ -377,6 +375,7 @@ public class Cliente extends javax.swing.JFrame{
                 out= new ObjectOutputStream(os);           
                 Chat chat2;
                chat2= new Chat (mensaje.getText(),cliente.getLocalPort());
+               chat2.ip=cliente.getInetAddress().getHostAddress();
                 chat2.setSala(escucharCliente.sala);
                 out.writeObject(chat2);
                 mensaje.setText("");  

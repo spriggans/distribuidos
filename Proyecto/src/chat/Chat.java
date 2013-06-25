@@ -13,6 +13,7 @@ public class Chat implements java.io.Serializable{
     public String horaEnvio;
     public int puerto;
     public int sala;
+    public String ip;
     
     
     public Chat (String mensaje, int puerto ){

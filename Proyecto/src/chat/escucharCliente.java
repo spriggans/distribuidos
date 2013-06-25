@@ -58,8 +58,18 @@ public class escucharCliente extends Thread{
                 in = new ObjectInputStream(is);
                 chat= (Chat) in.readObject();  
                 if (chat.mensaje.substring(0,1).equals("@") || chat.sala==sala){
-                    if (chat.mensaje.substring(0,1).equals("@")) chat.mensaje=chat.mensaje.substring(1);
-                    pantalla.append(cliente.getInetAddress()+":"+chat.puerto+" "+chat.horaEnvio+" > "+chat.mensaje+"\n"); 
+                    if (chat.mensaje.substring(0,1).equals("@")){
+                        chat.mensaje=chat.mensaje.substring(1);
+                        if (chat.sala==0)
+                            pantalla.append("General "+chat.ip+":"+chat.puerto+" "+chat.horaEnvio+" > "+chat.mensaje+"\n");
+                        if (chat.sala==1)
+                            pantalla.append("Admins de SO "+chat.ip+":"+chat.puerto+" "+chat.horaEnvio+" > "+chat.mensaje+"\n");
+                        if (chat.sala==2)
+                            pantalla.append("Admins de BD "+chat.ip+":"+chat.puerto+" "+chat.horaEnvio+" > "+chat.mensaje+"\n");
+                        if (chat.sala==3)
+                            pantalla.append("Monitoreo "+chat.ip+":"+chat.puerto+" "+chat.horaEnvio+" > "+chat.mensaje+"\n");
+                    } else
+                    pantalla.append(chat.ip+":"+chat.puerto+" "+chat.horaEnvio+" > "+chat.mensaje+"\n"); 
                 }
             }
             } catch (IOException ex) {
