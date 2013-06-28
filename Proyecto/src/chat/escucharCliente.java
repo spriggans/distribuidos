@@ -5,6 +5,7 @@
 package chat;
 
 import GUI.Cliente;
+import GUI.IniciarServidor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -57,9 +58,31 @@ public class escucharCliente extends Thread{
                 if (is!=null){
                 in = new ObjectInputStream(is);
                 chat= (Chat) in.readObject();  
+                if (chat.mensaje.contains("SALA1-")){
+                    chat.mensaje=chat.mensaje.substring(5);
+                            if (IniciarServidor.sala1.getText().equals("")) IniciarServidor.sala1.append("Admins de SO "+chat.ip+":"+chat.puerto+" "+chat.horaEnvio+" > "+chat.mensaje+"\n");
+                            else if (IniciarServidor.sala1.getRows()<10){
+                            IniciarServidor.sala1.append("Admins de SO "+chat.ip+":"+chat.puerto+" "+chat.horaEnvio+" > "+chat.mensaje+"\n");
+                            }
+                } else
+                if (chat.mensaje.contains("SALA2-")){
+                    chat.mensaje=chat.mensaje.substring(5);
+                            if (IniciarServidor.sala2.getText().equals("")) IniciarServidor.sala1.append("Admins de BD "+chat.ip+":"+chat.puerto+" "+chat.horaEnvio+" > "+chat.mensaje+"\n");
+                            else if (IniciarServidor.sala2.getRows()<10){
+                            IniciarServidor.sala2.append("Admins de BD "+chat.ip+":"+chat.puerto+" "+chat.horaEnvio+" > "+chat.mensaje+"\n");
+                            }
+                } else
+                if (chat.mensaje.contains("SALA3-")){
+                    chat.mensaje=chat.mensaje.substring(5);
+                            if (IniciarServidor.sala3.getText().equals("")) IniciarServidor.sala1.append("Monitoreo "+chat.ip+":"+chat.puerto+" "+chat.horaEnvio+" > "+chat.mensaje+"\n");
+                            else if (IniciarServidor.sala3.getRows()<10){
+                            IniciarServidor.sala3.append("Monitoreo "+chat.ip+":"+chat.puerto+" "+chat.horaEnvio+" > "+chat.mensaje+"\n");
+                            }
+                }
+                else
                 if (chat.mensaje.substring(0,1).equals("@") || chat.sala==sala){
                     if (chat.mensaje.substring(0,1).equals("@")){
-                        chat.mensaje=chat.mensaje.substring(1);
+                        chat.mensaje=chat.mensaje.substring(1);  
                         if (chat.sala==0)
                             pantalla.append("General "+chat.ip+":"+chat.puerto+" "+chat.horaEnvio+" > "+chat.mensaje+"\n");
                         if (chat.sala==1)

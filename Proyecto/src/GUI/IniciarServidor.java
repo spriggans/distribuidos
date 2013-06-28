@@ -5,6 +5,7 @@
 package GUI;
 
 import chat.servidor;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -12,6 +13,10 @@ import chat.servidor;
  */
 public class IniciarServidor extends javax.swing.JFrame {
 
+    public static JTextArea sala0= new JTextArea ();
+    public static JTextArea sala1= new JTextArea ();
+    public static JTextArea sala2= new JTextArea ();
+    public static JTextArea sala3= new JTextArea ();
     /**
      * Creates new form IniciarServidor
      */
