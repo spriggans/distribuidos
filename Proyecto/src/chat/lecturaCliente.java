@@ -4,6 +4,7 @@
  */
 package chat;
 
+import GUI.IniciarServidor;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -23,6 +25,11 @@ public class lecturaCliente extends Thread{
     private ObjectInputStream in=null;
     private Chat chat=null;
     public static ArrayList <Socket> listaCliente=null;
+    public static JTextArea sala0= new JTextArea ();
+    public static JTextArea sala1= new JTextArea ();
+    public static JTextArea sala2= new JTextArea ();
+    public static JTextArea sala3= new JTextArea ();
+    
 
     lecturaCliente(ArrayList listaClientes, Socket cliente) {
         this.cliente=cliente;
@@ -41,10 +48,11 @@ public class lecturaCliente extends Thread{
                 while (true){             
                     in = new ObjectInputStream(cliente.getInputStream());
                     chat= (Chat) in.readObject();
-                    System.out.println (chat.mensaje);
                     if (chat.mensaje.equals("solicitarLista")) enviarTodosLista();
                     else {
                     chat.horaEnvio=new Date().toLocaleString();
+                    if (chat.mensaje.equals("SALA1") || chat.mensaje.equals("SALA2") || chat.mensaje.equals("SALA3"))
+                        chat.mensaje="Se conecto "+chat.ip+":"+chat.puerto+" a la sala";       
                     enviarTodos();
                     }
                 }

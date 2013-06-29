@@ -5,6 +5,7 @@
 package chat;
 
 import GUI.Cliente;
+import GUI.IniciarServidor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -57,19 +58,32 @@ public class escucharCliente extends Thread{
                 if (is!=null){
                 in = new ObjectInputStream(is);
                 chat= (Chat) in.readObject();  
+                
                 if (chat.mensaje.substring(0,1).equals("@") || chat.sala==sala){
-                    if (chat.mensaje.substring(0,1).equals("@")){
-                        chat.mensaje=chat.mensaje.substring(1);
+                    if (chat.mensaje.substring(0,1).equals("@"))
+                        chat.mensaje=chat.mensaje.substring(1);  
                         if (chat.sala==0)
                             pantalla.append("General "+chat.ip+":"+chat.puerto+" "+chat.horaEnvio+" > "+chat.mensaje+"\n");
-                        if (chat.sala==1)
+                        else
+                        if (chat.sala==1){
+                            if (IniciarServidor.sala1.getRows()<10)
+                            IniciarServidor.sala1.append("Admins de SO "+chat.ip+":"+chat.puerto+" "+chat.horaEnvio+" > "+chat.mensaje+"\n");
                             pantalla.append("Admins de SO "+chat.ip+":"+chat.puerto+" "+chat.horaEnvio+" > "+chat.mensaje+"\n");
-                        if (chat.sala==2)
+                        }
+                        else
+                        if (chat.sala==2){
+                             if (IniciarServidor.sala2.getRows()<10)
+                             IniciarServidor.sala2.append("Admins de BD "+chat.ip+":"+chat.puerto+" "+chat.horaEnvio+" > "+chat.mensaje+"\n");
                             pantalla.append("Admins de BD "+chat.ip+":"+chat.puerto+" "+chat.horaEnvio+" > "+chat.mensaje+"\n");
-                        if (chat.sala==3)
+                        }
+                        else
+                        if (chat.sala==3){
+                            if (IniciarServidor.sala3.getRows()<10)
+                            IniciarServidor.sala3.append("Monitoreo "+chat.ip+":"+chat.puerto+" "+chat.horaEnvio+" > "+chat.mensaje+"\n");                              
                             pantalla.append("Monitoreo "+chat.ip+":"+chat.puerto+" "+chat.horaEnvio+" > "+chat.mensaje+"\n");
-                    } else
-                    pantalla.append(chat.ip+":"+chat.puerto+" "+chat.horaEnvio+" > "+chat.mensaje+"\n"); 
+                        }
+                        else
+                        pantalla.append(chat.ip+":"+chat.puerto+" "+chat.horaEnvio+" > "+chat.mensaje+"\n"); 
                 }
             }
             } catch (IOException ex) {

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.rmi.server.*;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -28,7 +29,6 @@ public class servidor extends Thread{
     public static ArrayList <Socket> listaClientes= new ArrayList <Socket>();
     public static boolean servi;
     private ObjectOutputStream out;
-
     
     public servidor(String ip) {
 

@@ -9,6 +9,8 @@ import Logica.Usuario;
 import chat.Chat;
 import chat.escucharCliente;
 import static chat.escucharCliente.sala;
+import chat.lecturaCliente;
+import chat.servidor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -551,7 +553,9 @@ public class Cliente extends javax.swing.JFrame{
             try {            
                 out= new ObjectOutputStream(os);           
                 Chat chat2;
-                chat2= new Chat (mensaje.getText(),cliente.getLocalPort());
+               chat2= new Chat (mensaje.getText(),cliente.getLocalPort());
+               chat2.ip=cliente.getInetAddress().getHostAddress();
+                chat2.setSala(escucharCliente.sala);
                 out.writeObject(chat2);
                 mensaje.setText("");  
             } catch (UnknownHostException ex) {
@@ -565,6 +569,19 @@ public class Cliente extends javax.swing.JFrame{
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         escucharCliente.sala=1;
+            try {            
+                out= new ObjectOutputStream(os);           
+                Chat chat2;
+               chat2= new Chat ("SALA1",cliente.getLocalPort());
+               chat2.ip=cliente.getInetAddress().getHostAddress();
+                chat2.setSala(1);
+                out.writeObject(chat2); 
+            } catch (UnknownHostException ex) {
+                System.err.println ("No se encuentra el host");
+            } catch (IOException ex) {
+                System.err.println ("Error de i/o");
+            } 
+        this.pantalla.setText(IniciarServidor.sala1.getText());
         this.nameSala.setText("Administradores de SO");
         
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -572,6 +589,19 @@ public class Cliente extends javax.swing.JFrame{
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
          escucharCliente.sala=2;
+         try {            
+                out= new ObjectOutputStream(os);           
+                Chat chat2;
+               chat2= new Chat ("SALA2",cliente.getLocalPort());
+               chat2.ip=cliente.getInetAddress().getHostAddress();
+                chat2.setSala(2);
+                out.writeObject(chat2); 
+            } catch (UnknownHostException ex) {
+                System.err.println ("No se encuentra el host");
+            } catch (IOException ex) {
+                System.err.println ("Error de i/o");
+            } 
+         this.pantalla.setText(IniciarServidor.sala2.getText());
          this.nameSala.setText("Administradores de BD");
  
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -579,6 +609,19 @@ public class Cliente extends javax.swing.JFrame{
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
          escucharCliente.sala=3;
+         try {            
+                out= new ObjectOutputStream(os);           
+                Chat chat2;
+               chat2= new Chat ("SALA3",cliente.getLocalPort());
+               chat2.ip=cliente.getInetAddress().getHostAddress();
+                chat2.setSala(3);
+                out.writeObject(chat2); 
+            } catch (UnknownHostException ex) {
+                System.err.println ("No se encuentra el host");
+            } catch (IOException ex) {
+                System.err.println ("Error de i/o");
+            } 
+         this.pantalla.setText(IniciarServidor.sala3.getText());
          this.nameSala.setText("Personal de Monitoreo");
        
     }//GEN-LAST:event_jButton3ActionPerformed
