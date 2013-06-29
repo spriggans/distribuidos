@@ -574,7 +574,7 @@ public class Cliente extends javax.swing.JFrame{
                 Chat chat2;
                chat2= new Chat ("SALA1",cliente.getLocalPort());
                chat2.ip=cliente.getInetAddress().getHostAddress();
-                chat2.setSala(-1);
+                chat2.setSala(1);
                 out.writeObject(chat2); 
             } catch (UnknownHostException ex) {
                 System.err.println ("No se encuentra el host");
@@ -594,7 +594,7 @@ public class Cliente extends javax.swing.JFrame{
                 Chat chat2;
                chat2= new Chat ("SALA2",cliente.getLocalPort());
                chat2.ip=cliente.getInetAddress().getHostAddress();
-                chat2.setSala(-1);
+                chat2.setSala(2);
                 out.writeObject(chat2); 
             } catch (UnknownHostException ex) {
                 System.err.println ("No se encuentra el host");
@@ -614,7 +614,7 @@ public class Cliente extends javax.swing.JFrame{
                 Chat chat2;
                chat2= new Chat ("SALA3",cliente.getLocalPort());
                chat2.ip=cliente.getInetAddress().getHostAddress();
-                chat2.setSala(-1);
+                chat2.setSala(3);
                 out.writeObject(chat2); 
             } catch (UnknownHostException ex) {
                 System.err.println ("No se encuentra el host");
