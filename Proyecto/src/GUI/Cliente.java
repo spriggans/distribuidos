@@ -23,6 +23,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -121,6 +123,15 @@ public class Cliente extends javax.swing.JFrame{
         jLabel6 = new javax.swing.JLabel();
         nameSala = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jSeparator4 = new javax.swing.JSeparator();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jtfIP = new javax.swing.JTextField();
+        jButton4 = new javax.swing.JButton();
+        jtfPais = new javax.swing.JTextField();
+        jtfCod = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         agregarNodo = new javax.swing.JMenuItem();
@@ -233,7 +244,7 @@ public class Cliente extends javax.swing.JFrame{
         getContentPane().add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 480, 10));
 
         jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        getContentPane().add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 30, 20, 450));
+        getContentPane().add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 20, 10, 450));
 
         jRadioButton1.setText("De forma controlada");
         jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -266,8 +277,8 @@ public class Cliente extends javax.swing.JFrame{
         jLabel4.setText("Eliminar recursivamente:");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 380, -1, -1));
 
-        jLabel5.setText("Lista de nodos");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 40, -1, -1));
+        jLabel5.setText("IP");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 50, -1, -1));
 
         jScrollPane9.setViewportView(listaNodos);
 
@@ -337,6 +348,38 @@ public class Cliente extends javax.swing.JFrame{
 
         jLabel7.setText("label");
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 10, 320, 20));
+
+        jSeparator4.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        getContentPane().add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 30, 20, 450));
+
+        jLabel8.setText("Lista de nodos");
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 40, -1, -1));
+
+        jLabel9.setText("Codigo");
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 150, -1, -1));
+
+        jtfIP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtfIPActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jtfIP, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 50, 130, -1));
+
+        jButton4.setText("Consultar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1010, 80, -1, -1));
+        getContentPane().add(jtfPais, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 120, 100, -1));
+        getContentPane().add(jtfCod, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 150, 100, -1));
+
+        jLabel10.setText("Localizador de IP");
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 20, -1, -1));
+
+        jLabel11.setText("Pais");
+        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 120, -1, -1));
 
         jMenu1.setText("Nodo");
 
@@ -626,6 +669,26 @@ public class Cliente extends javax.swing.JFrame{
        
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jtfIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfIPActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtfIPActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        try {
+            // TODO add your handling code here:
+             ClienteGeo cg = new ClienteGeo();
+            ArrayList<String> geoIp = cg.getGeoIp(jtfIP.getText());
+            jtfPais.setText(geoIp.get(0));
+            jtfCod.setText(geoIp.get(1));
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SAXException ex) {
+            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -672,13 +735,18 @@ public class Cliente extends javax.swing.JFrame{
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JRadioButton jRadioButton1;
@@ -695,7 +763,11 @@ public class Cliente extends javax.swing.JFrame{
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
     private javax.swing.JTabbedPane jTabbedPane2;
+    private javax.swing.JTextField jtfCod;
+    private javax.swing.JTextField jtfIP;
+    private javax.swing.JTextField jtfPais;
     private javax.swing.JList listaDirectorios;
     private javax.swing.JList listaNodos;
     private javax.swing.JList listaProcesos;
